@@ -71,7 +71,7 @@ public class Game {
         SpriteContainer.create();
         FontContainer.create();
 
-        room = Loader.loadRandomTerrain(10, 10);
+        room = Loader.loadRandomTerrain(100, 100);
         camera = new Camera();
     }
 
@@ -79,7 +79,7 @@ public class Game {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glClearColor(0, 0, 0, 1); // Set background color to black and opaque
+        glClearColor(0, .3f, .8f, 1); // Set background color to black and opaque
         glClearDepth(1);                   // Set background depth to farthest
         glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
         glDepthFunc(GL_LEQUAL);    // Set the type of depth-test

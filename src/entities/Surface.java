@@ -16,7 +16,7 @@ public class Surface extends Solid {
         this.pos2 = pos2;
         this.pos3 = pos3;
         this.pos4 = pos4;
-        setSprite("Wall");
+        setSprite("Grass");
         ArrayList<Vector> a = new ArrayList();
         a.add(pos1);
         a.add(pos2);
@@ -27,19 +27,22 @@ public class Surface extends Solid {
 
     @Override
     public void draw() {
-        //Graphics.drawSprite(sprite, pos1, pos2, pos3, pos4, 0);
-        Graphics.drawLine(pos1, pos2, 1, 0, 0);
-        Graphics.drawLine(pos1, pos3, 1, 0, 0);
-        Graphics.drawLine(pos3, pos2, 1, 0, 0);
-        Graphics.drawLine(pos1, pos4, 1, 0, 0);
-        Graphics.drawLine(pos4, pos3, 1, 0, 0);
+        Graphics.drawSprite(sprite, pos1, pos2, pos3, pos4, 0);
+//        Graphics.drawLine(pos1, pos2, 1, 0, 0);
+//        Graphics.drawLine(pos1, pos3, 1, 0, 0);
+//        Graphics.drawLine(pos3, pos2, 1, 0, 0);
+//        Graphics.drawLine(pos1, pos4, 1, 0, 0);
+//        Graphics.drawLine(pos4, pos3, 1, 0, 0);
     }
 
     @Override
     public ArrayList<Triangle> getTriangles() {
         ArrayList<Triangle> a = new ArrayList();
-        a.add(new Triangle(pos1, pos2, pos3));
-        a.add(new Triangle(pos1, pos4, pos3));
+        Vector c = pos1.add(pos2).add(pos3).add(pos4).divide(4);
+        a.add(new Triangle(pos1, pos2, c));
+        a.add(new Triangle(pos2, pos3, c));
+        a.add(new Triangle(pos3, pos4, c));
+        a.add(new Triangle(pos4, pos1, c));
         return a;
     }
 

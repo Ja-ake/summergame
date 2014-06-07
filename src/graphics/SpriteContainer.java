@@ -21,7 +21,8 @@ public class SpriteContainer {
         System.out.println("Loading sprites");
         spriteMap = new HashMap();
         texLoader = new TextureLoader();
-        add("Wall","wall");
+        add("Wall", "wall");
+        add("Grass", "grass");
     }
 
     public static Sprite get(String name) {

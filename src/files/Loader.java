@@ -80,7 +80,7 @@ public class Loader {
     }
 
     public static Room loadRandomTerrain(int width, int height) {
-        int detail = 32;
+        int detail = 6;
         Room room = new Room(width * detail, height * detail);
         Noise n = new Noise(Math.random());
         double[][] heightMap = new double[width][height];

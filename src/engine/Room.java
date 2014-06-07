@@ -37,22 +37,6 @@ public class Room {
         return null;
     }
     
-    public void calculateViewport() {
-        int displayWidth = Display.getWidth();
-        int displayHeight = Display.getHeight();
-        int drawWidth, drawHeight;
-        if ((double) displayWidth / displayHeight > Camera.ASPECT_RATIO) {
-            drawHeight = displayHeight;
-            drawWidth = (int) (displayHeight * Camera.ASPECT_RATIO);
-        } else {
-            drawWidth = displayWidth;
-            drawHeight = (int) (displayWidth / Camera.ASPECT_RATIO);
-        }
-        int left = (displayWidth - drawWidth) / 2;
-        int bottom = (displayHeight - drawHeight) / 2;
-        glViewport(left, bottom, drawWidth, drawHeight);
-    }
-    
     public void checkCollision(CollisionPacket c) {
         Entity temp = new Entity(c.R3Position.add(c.R3Velocity));
         temp.setBounds(c.eRadius);
@@ -78,10 +62,7 @@ public class Room {
     }
     
     public void draw() {
-        calculateViewport();
         camera.setProjectionFPS();
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
         for (Entity e : entityArray) {
             e.draw();
         }

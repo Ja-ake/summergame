@@ -22,10 +22,32 @@ public class Game {
     private long lastFPS;
     public Room room;
 
+    public void calculateViewport() {
+        int displayWidth = Display.getWidth();
+        int displayHeight = Display.getHeight();
+        int drawWidth, drawHeight;
+        if ((double) displayWidth / displayHeight > Camera.ASPECT_RATIO) {
+            drawHeight = displayHeight;
+            drawWidth = (int) (displayHeight * Camera.ASPECT_RATIO);
+        } else {
+            drawWidth = displayWidth;
+            drawHeight = (int) (displayWidth / Camera.ASPECT_RATIO);
+        }
+        int left = (displayWidth - drawWidth) / 2;
+        int bottom = (displayHeight - drawHeight) / 2;
+        glViewport(left, bottom, drawWidth, drawHeight);
+    }
+
     public void destroy() {
         Mouse.destroy();
         Keyboard.destroy();
         Display.destroy();
+    }
+
+    public void draw() {
+        calculateViewport();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        room.draw();
     }
 
     public void init() throws LWJGLException {
@@ -77,8 +99,6 @@ public class Game {
         while (!Display.isCloseRequested() && !Keys.pressed(Keyboard.KEY_ESCAPE)) {
             int delta = getDelta();
             step(delta);
-            Display.update();
-            Display.sync(SPEED);
         }
     }
 
@@ -127,14 +147,20 @@ public class Game {
     }
 
     public void step(int delta) {
+        update();
+        draw();
+        updateFPS();
+        Display.update();
+        Display.sync(SPEED);
+    }
+
+    public void update() {
         Keys.update();
         MouseInput.update();
         if (Keys.clicked(Keyboard.KEY_F11)) {
             setDisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT, !Display.isFullscreen());
         }
         room.update();
-        room.draw();
-        updateFPS();
     }
 
     public void updateFPS() {

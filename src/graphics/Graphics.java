@@ -3,6 +3,8 @@ package graphics;
 import collisions.Vector;
 import engine.Sprite;
 import static org.lwjgl.opengl.GL11.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.TextureImpl;
 
 public abstract class Graphics {
 
@@ -58,7 +60,7 @@ public abstract class Graphics {
         glRotated(angle * 180 / Math.PI, normal.x, normal.y, normal.z);
         glTranslated(-s.getWidth() / 2, -s.getHeight() / 2, 0);
 
-        //glColor3d(1, 1, 1);
+        glColor3d(1, 1, 1);
         glBegin(GL_QUADS);
         {
             glTexCoord2d(0, 0);
@@ -72,6 +74,15 @@ public abstract class Graphics {
         }
         glEnd();
         glPopMatrix();
+    }
+
+    public static void drawText(String s, double x, double y) {
+        drawText(s, "Default", x, y, Color.black);
+    }
+
+    public static void drawText(String s, String font, double x, double y, Color c) {
+        TextureImpl.bindNone();
+        FontContainer.get(font).drawString((float) x, (float) y, s, c);
     }
 
 }

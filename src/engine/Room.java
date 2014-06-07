@@ -79,14 +79,8 @@ public class Room {
     
     public void draw() {
         calculateViewport();
-        camera.update();
-
-//        glMatrixMode(GL_PROJECTION);
-//        glLoadIdentity();
-//        //glOrtho(viewX, viewX + viewWidth, viewY, viewY + viewHeight, -10, 10);
-//        glOrtho(0, 0, 500, 500, -10, 10);
+        camera.setProjectionFPS();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glMatrixMode(GL_MODELVIEW);
         
         for (Entity e : entityArray) {
             e.draw();

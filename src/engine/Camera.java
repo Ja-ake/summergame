@@ -26,7 +26,7 @@ public class Camera {
         return new Vector(x, y, z);
     }
 
-    public void update() {
+    public void setProjectionFPS() {
         // Set the aspect ratio of the clipping volume to match the viewport
         glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
         glLoadIdentity();             // Reset
@@ -35,5 +35,13 @@ public class Camera {
         gluLookAt((float) pos.x, (float) pos.y, (float) pos.z,
                 (float) getLookAt().x, (float) getLookAt().y, (float) getLookAt().z,
                 (float) UP.x, (float) UP.y, (float) UP.z);
+        glMatrixMode(GL_MODELVIEW);
+    }
+    
+    public void setProjectionOrtho() {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, 0, 1000, 1000, -1, 1);
+        glMatrixMode(GL_MODELVIEW);
     }
 }

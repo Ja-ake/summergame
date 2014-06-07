@@ -2,7 +2,9 @@ package entities;
 
 import collisions.Vector;
 import engine.Keys;
+import graphics.Graphics;
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 
 public class Player extends MovingEntity {
 
@@ -13,6 +15,11 @@ public class Player extends MovingEntity {
         super(pos);
         zFacing = Math.PI / 2;
         setBounds(new Vector(6, 6, 10));
+    }
+
+    @Override
+    public void draw() {
+        Graphics.drawText("Hello", "Default", 100, 100, Color.red);
     }
 
     @Override

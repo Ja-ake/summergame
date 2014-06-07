@@ -1,5 +1,7 @@
 package collisions;
 
+import java.util.ArrayList;
+
 public class RectPrism {
 
     private Vector center, size;
@@ -9,13 +11,20 @@ public class RectPrism {
         this.size = size;
     }
 
-    public RectPrism(Triangle t) {
-        double minX = Math.min(t.p1.x, Math.min(t.p2.x, t.p3.x));
-        double maxX = Math.max(t.p1.x, Math.max(t.p2.x, t.p3.x));
-        double minY = Math.min(t.p1.y, Math.min(t.p2.y, t.p3.y));
-        double maxY = Math.max(t.p1.y, Math.max(t.p2.y, t.p3.y));
-        double minZ = Math.min(t.p1.z, Math.min(t.p2.z, t.p3.z));
-        double maxZ = Math.max(t.p1.z, Math.max(t.p2.z, t.p3.z));
+    public RectPrism(ArrayList<Vector> a) {
+        double minX, maxX, minY, maxY, minZ, maxZ;
+        minX = maxX = a.get(0).x;
+        minY = maxY = a.get(0).y;
+        minZ = maxZ = a.get(0).z;
+        for (int i = 1; i < a.size(); i++) {
+            Vector v = a.get(i);
+            minX = Math.min(minX, v.x);
+            maxX = Math.max(maxX, v.x);
+            minY = Math.min(minY, v.y);
+            maxY = Math.max(maxY, v.y);
+            minZ = Math.min(minZ, v.z);
+            maxZ = Math.max(maxZ, v.z);
+        }
         center = new Vector((maxX + minX) / 2, (maxY + minY) / 2, (maxZ + minZ) / 2);
         size = new Vector((maxX - minX) / 2, (maxY - minY) / 2, (maxZ - minZ) / 2);
     }
@@ -40,6 +49,35 @@ public class RectPrism {
 
     public Vector getSize() {
         return size;
+    }
+
+    public ArrayList<Triangle> getTriangles() {
+        ArrayList<Triangle> r = new ArrayList();
+        double x1 = corner1().x;
+        double y1 = corner1().y;
+        double z1 = corner1().z;
+        double x2 = corner2().x;
+        double y2 = corner2().y;
+        double z2 = corner2().z;
+        //x1 face
+        r.add(new Triangle(x1, y1, z1, x1, y2, z1, x1, y1, z2));
+        r.add(new Triangle(x1, y2, z2, x1, y2, z1, x1, y1, z2));
+        //x2 face
+        r.add(new Triangle(x2, y1, z1, x2, y2, z1, x2, y1, z2));
+        r.add(new Triangle(x2, y2, z2, x2, y2, z1, x2, y1, z2));
+        //y1 face
+        r.add(new Triangle(x1, y1, z1, x2, y1, z1, x1, y1, z2));
+        r.add(new Triangle(x2, y1, z2, x2, y1, z1, x1, y1, z2));
+        //y2 face
+        r.add(new Triangle(x1, y2, z1, x2, y2, z1, x1, y2, z2));
+        r.add(new Triangle(x2, y2, z2, x2, y2, z1, x1, y2, z2));
+        //z1 face
+        r.add(new Triangle(x1, y1, z1, x2, y1, z1, x1, y2, z1));
+        r.add(new Triangle(x2, y2, z1, x2, y1, z1, x1, y2, z1));
+        //z2 face
+        r.add(new Triangle(x1, y1, z2, x2, y1, z2, x1, y2, z2));
+        r.add(new Triangle(x2, y2, z2, x2, y1, z2, x1, y2, z2));
+        return r;
     }
 
     public boolean intersects(RectPrism other) {

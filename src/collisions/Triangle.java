@@ -1,6 +1,5 @@
 package collisions;
 
-import engine.BoundingBox;
 import java.util.ArrayList;
 
 public class Triangle {
@@ -27,8 +26,8 @@ public class Triangle {
         return r;
     }
 
-    public boolean couldCollide(BoundingBox b) {
-        return new RectPrism(this).intersects(b);
+    public boolean couldCollide(RectPrism r) {
+        return new RectPrism(getPoints()).intersects(r);
     }
 
     @Override

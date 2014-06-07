@@ -9,20 +9,17 @@ import entities.Solid;
 import java.util.ArrayList;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import static org.lwjgl.opengl.GL11.*;
 
 public class Room {
     
     public ArrayList<Entity> entityArray;
     public int width;
     public int height;
-    public Camera camera;
     
     public Room(int w, int h) {
         entityArray = new ArrayList();
         width = w;
         height = h;
-        camera = new Camera();
     }
     
     public Entity addEntity(Entity e) {
@@ -42,7 +39,7 @@ public class Room {
         temp.setBounds(c.eRadius);
         temp.addToRoom(this);
         for (Solid s : temp.touching(Solid.class)) {
-            for (Triangle t : s.getBounds().getTriangles()) {
+            for (Triangle t : s.getTriangles()) {
                 if (t.couldCollide(temp.getBounds())) {
                     Collisions.checkTriangle(c, t.p1.divide(c.eRadius), t.p2.divide(c.eRadius), t.p3.divide(c.eRadius));
                 }
@@ -62,7 +59,6 @@ public class Room {
     }
     
     public void draw() {
-        camera.setProjectionFPS();
         for (Entity e : entityArray) {
             e.draw();
         }

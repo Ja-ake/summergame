@@ -1,7 +1,9 @@
 package entities;
 
+import collisions.Triangle;
 import collisions.Vector;
 import graphics.Graphics;
+import java.util.ArrayList;
 
 public class Wall extends Solid {
 
@@ -23,6 +25,11 @@ public class Wall extends Solid {
         Graphics.drawSprite(sprite, pos.x, pos.y - 16, pos.z, (int) Math.round(imageIndex), Math.PI / 2, new Vector(1, 0, 0));
         Graphics.drawSprite(sprite, pos.x + 16, pos.y, pos.z, (int) Math.round(imageIndex), Math.PI / 2, new Vector(0, 1, 0));
         Graphics.drawSprite(sprite, pos.x - 16, pos.y, pos.z, (int) Math.round(imageIndex), Math.PI / 2, new Vector(0, 1, 0));
+    }
+
+    @Override
+    public ArrayList<Triangle> getTriangles() {
+        return bounds.getTriangles();
     }
 
 }

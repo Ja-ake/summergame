@@ -3,6 +3,7 @@ package files;
 import collisions.Vector;
 import engine.Room;
 import entities.Player;
+import entities.Surface;
 import entities.Wall;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -62,11 +63,11 @@ public class Loader {
     }
 
     //Change this
-    public static void chooseEntityChar(char c, int x, int y, Room r) {
+    private static void chooseEntityChar(char c, int x, int y, Room r) {
     }
 
     //Change this
-    public static void chooseEntityColor(int c, int x, int y, Room r) {
+    private static void chooseEntityColor(int c, int x, int y, Room r) {
         new Wall(new Vector(x, y, -16)).addToRoom(r);
         switch (c) {
             case 0xFF000000:
@@ -76,5 +77,32 @@ public class Loader {
                 new Player(new Vector(x, y, 16)).addToRoom(r);
                 break;
         }
+    }
+
+    public static Room loadRandomTerrain(int width, int height) {
+        int detail = 8;
+        Room room = new Room(width * detail, height * detail);
+        Noise n = new Noise(Math.random());
+        double[][] heightMap = new double[100][100];
+        for (int i = 0; i < heightMap.length; i++) {
+            for (int j = 0; j < heightMap[0].length; j++) {
+                heightMap[i][j] = 10 * n.multi(i, j, 4, .04) - 10;
+            }
+        }
+        for (int i = 0; i < heightMap.length - 1; i++) {
+            for (int j = 0; j < heightMap[0].length - 1; j++) {
+                Vector v1 = vectorAt(heightMap, i, j, detail);
+                Vector v2 = vectorAt(heightMap, i + 1, j, detail);
+                Vector v3 = vectorAt(heightMap, i + 1, j + 1, detail);
+                Vector v4 = vectorAt(heightMap, i, j + 1, detail);
+                new Surface(v1, v2, v3, v4).addToRoom(room);
+            }
+        }
+        new Player(new Vector(0, 0, 20)).addToRoom(room);
+        return room;
+    }
+
+    private static Vector vectorAt(double[][] heightMap, int i, int j, int detail) {
+        return new Vector(i * detail, j * detail, heightMap[i][j]);
     }
 }

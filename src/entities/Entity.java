@@ -1,7 +1,7 @@
 package entities;
 
+import collisions.RectPrism;
 import collisions.Vector;
-import engine.BoundingBox;
 import engine.Room;
 import graphics.Graphics;
 import graphics.SpriteContainer;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Entity {
 
     protected Vector pos;
-    protected BoundingBox bounds;
+    protected RectPrism bounds;
     protected Sprite sprite;
     protected double imageIndex;
     protected double imageSpeed;
@@ -23,7 +23,7 @@ public class Entity {
     public Entity(Vector pos) {
         this.pos = pos;
 
-        bounds = new BoundingBox(this, new Vector(0, 0, 0));
+        bounds = new RectPrism(pos, new Vector(0, 0, 0));
         sprite = null;
     }
 
@@ -54,7 +54,7 @@ public class Entity {
 //        Graphics.fillRect(pos.x, pos.y, w, h, 0, 0, 0);
 //        Graphics.fillRect(pos.x, pos.y, w * val / max, h, r, g, b);
 //    }
-    public BoundingBox getBounds() {
+    public RectPrism getBounds() {
         return bounds;
     }
 

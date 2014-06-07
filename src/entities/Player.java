@@ -1,6 +1,7 @@
 package entities;
 
 import collisions.Vector;
+import engine.Game;
 import engine.Keys;
 import graphics.Graphics;
 import org.lwjgl.input.Keyboard;
@@ -19,7 +20,7 @@ public class Player extends MovingEntity {
 
     @Override
     public void draw() {
-        Graphics.drawText("Hello", "Default", 100, 100, Color.red);
+        Graphics.drawText("Hello", "Default", 200, 100, Color.green);
     }
 
     @Override
@@ -27,10 +28,10 @@ public class Player extends MovingEntity {
         super.update();
 //        pos = new Vector(pos.x + .0005, pos.y + .0005, pos.z + .0005);
 //        pos = new Vector(pos.x - pos.x % .001, pos.y - pos.y % .001, pos.z - pos.z % .001);
-        if (pos.z < 10) {
-            System.out.println(pos);
-            System.out.println(vel);
-        }
+//        if (pos.z < 10) {
+//            System.out.println(pos);
+//            System.out.println(vel);
+//        }
         if (Keys.pressed(Keyboard.KEY_LEFT)) {
             xyFacing += .05;
         }
@@ -57,9 +58,9 @@ public class Player extends MovingEntity {
             pos = new Vector(pos.x, pos.y, 15);
         }
         vel = new Vector(vel.x * .5, vel.y * .5, vel.z);
-        room.camera.pos = pos;
-        room.camera.xyDirection = xyFacing;
-        room.camera.zDirection = zFacing;
+        Game.getCamera().pos = pos;
+        Game.getCamera().xyDirection = xyFacing;
+        Game.getCamera().zDirection = zFacing;
     }
 
 }

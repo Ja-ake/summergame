@@ -2,6 +2,7 @@ package engine;
 
 import files.Loader;
 import graphics.FontContainer;
+import graphics.Graphics;
 import graphics.SpriteContainer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -20,7 +21,8 @@ public class Game {
     private long lastFrame;
     private int fps;
     private long lastFPS;
-    public Room room;
+    private Room room;
+    private static Camera camera;
 
     public void calculateViewport() {
         int displayWidth = Display.getWidth();
@@ -47,7 +49,9 @@ public class Game {
     public void draw() {
         calculateViewport();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        getCamera().setProjectionFPS();
         room.draw();
+        Graphics.drawText("" + fps, 100, 100);
     }
 
     public void init() throws LWJGLException {
@@ -67,7 +71,8 @@ public class Game {
         SpriteContainer.create();
         FontContainer.create();
 
-        room = Loader.loadImage("room1");
+        room = Loader.loadRandomTerrain(100, 100);
+        camera = new Camera();
     }
 
     public void initGL() {
@@ -80,6 +85,10 @@ public class Game {
         glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
         glShadeModel(GL_SMOOTH);   // Enable smooth shading
         //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+    }
+    
+    public static Camera getCamera() {
+        return camera;
     }
 
     public int getDelta() {

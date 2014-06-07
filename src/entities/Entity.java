@@ -107,7 +107,7 @@ public class Entity {
     }
 
     public void setBounds(Vector size) {
-        bounds.size = size;
+        bounds.setSize(size);
     }
 
     public void setDepth(int d) {

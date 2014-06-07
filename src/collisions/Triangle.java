@@ -1,5 +1,8 @@
 package collisions;
 
+import engine.BoundingBox;
+import java.util.ArrayList;
+
 public class Triangle {
 
     public Vector p1, p2, p3;
@@ -14,6 +17,18 @@ public class Triangle {
         p1 = new Vector(x1, y1, z1);
         p2 = new Vector(x2, y2, z2);
         p3 = new Vector(x3, y3, z3);
+    }
+
+    public ArrayList<Vector> getPoints() {
+        ArrayList<Vector> r = new ArrayList();
+        r.add(p1);
+        r.add(p2);
+        r.add(p3);
+        return r;
+    }
+
+    public boolean couldCollide(BoundingBox b) {
+        return new RectPrism(this).intersects(b);
     }
 
     @Override

@@ -14,8 +14,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
     public static final int SPEED = 60;
-    public static final int DISPLAY_WIDTH = 400;
-    public static final int DISPLAY_HEIGHT = 400;
+    public static final int DISPLAY_WIDTH = 800;
+    public static final int DISPLAY_HEIGHT = 800;
 
     private long lastFrame;
     private int fps;

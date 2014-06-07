@@ -56,7 +56,7 @@ public abstract class Collisions {
         // Get interval of plane intersection:
         double t0, t1;
         boolean embeddedInPlane = false;
-            // Calculate the signed distance from sphere
+        // Calculate the signed distance from sphere
         // position to triangle plane
         double signedDistToTrianglePlane = trianglePlane.signedDistanceTo(colPackage.basePoint);
         // cache this as we’re going to use it a few times below:
@@ -64,11 +64,11 @@ public abstract class Collisions {
         // if sphere is travelling parrallel to the plane:
         if (normalDotVelocity == 0) {
             if (Math.abs(signedDistToTrianglePlane) >= 1) {
-                    // Sphere is not embedded in plane.
+                // Sphere is not embedded in plane.
                 // No collision possible:
                 return;
             } else {
-                    // sphere is embedded in plane.
+                // sphere is embedded in plane.
                 // It intersects in the whole range [0..1]
                 embeddedInPlane = true;
                 t0 = 0;
@@ -86,7 +86,7 @@ public abstract class Collisions {
             }
             // Check that at least one result is within range:
             if (t0 > 1 || t1 < 0) {
-                    // Both t values are outside values [0,1]
+                // Both t values are outside values [0,1]
                 // No collision possible:
                 return;
             }
@@ -104,14 +104,14 @@ public abstract class Collisions {
                 t1 = 1;
             }
         }
-            // OK, at this point we have two time values t0 and t1
+        // OK, at this point we have two time values t0 and t1
         // between which the swept sphere intersects with the
         // triangle plane. If any collision is to occur it must
         // happen within this interval.
         Vector collisionPoint = null;
         boolean foundCollison = false;
         double t = 1;
-            // First we check for the easy case - collision inside
+        // First we check for the easy case - collision inside
         // the triangle. If this happens it must be at time t0
         // as this is when the sphere rests on the front side
         // of the triangle plane. Note, this can only happen if
@@ -124,27 +124,28 @@ public abstract class Collisions {
                 collisionPoint = planeIntersectionPoint;
             }
         }
-            // if we haven’t found a collision already we’ll have to
+        // if we haven’t found a collision already we’ll have to
         // sweep sphere against points and edges of the triangle.
         // Note: A collision inside the triangle (the check above)
         // will always happen before a vertex or edge collision!
         // This is why we can skip the swept test if the above
         // gives a collision!
         if (foundCollison == false) {
+            //System.out.println("?");
             // some commonly used terms:
             Vector velocity = colPackage.velocity;
             Vector base = colPackage.basePoint;
             double velocitySquaredLength = velocity.squaredLength();
             double a, b, c; // Params for equation
             IgnoreMePls newT = new IgnoreMePls(0);
-                // For each vertex or edge a quadratic equation have to
+            // For each vertex or edge a quadratic equation have to
             // be solved. We parameterize this equation as
             // a*t^2 + b*t + c = 0 and below we calculate the
             // parameters a,b and c for each test.
             // Check against points:
             a = velocitySquaredLength;
             // P1
-            b = 2.0 * (velocity.dot(base.subtract(p1)));
+            b = 2 * (velocity.dot(base.subtract(p1)));
             c = (p1.subtract(base)).squaredLength() - 1;
             if (getLowestRoot(a, b, c, t, newT)) {
                 t = newT.val;
@@ -152,7 +153,7 @@ public abstract class Collisions {
                 collisionPoint = p1;
             }
             // P2
-            b = 2.0 * (velocity.dot(base.subtract(p2)));
+            b = 2 * (velocity.dot(base.subtract(p2)));
             c = (p2.subtract(base)).squaredLength() - 1;
             if (getLowestRoot(a, b, c, t, newT)) {
                 t = newT.val;
@@ -160,14 +161,14 @@ public abstract class Collisions {
                 collisionPoint = p2;
             }
             // P3
-            b = 2.0 * (velocity.dot(base.subtract(p3)));
+            b = 2 * (velocity.dot(base.subtract(p3)));
             c = (p3.subtract(base)).squaredLength() - 1;
             if (getLowestRoot(a, b, c, t, newT)) {
                 t = newT.val;
                 foundCollison = true;
                 collisionPoint = p3;
             }
-                // Check agains edges:
+            // Check agains edges:
             // p1 . p2:
             Vector edge = p2.subtract(p1);
             Vector baseToVertex = p1.subtract(base);
@@ -176,7 +177,7 @@ public abstract class Collisions {
             double edgeDotBaseToVertex = edge.dot(baseToVertex);
             // Calculate parameters for equation
             a = edgeSquaredLength * -velocitySquaredLength + edgeDotVelocity * edgeDotVelocity;
-            b = edgeSquaredLength * (2 * velocity.dot(baseToVertex)) - 2.0 * edgeDotVelocity * edgeDotBaseToVertex;
+            b = edgeSquaredLength * (2 * velocity.dot(baseToVertex)) - 2 * edgeDotVelocity * edgeDotBaseToVertex;
             c = edgeSquaredLength * (1 - baseToVertex.squaredLength()) + edgeDotBaseToVertex * edgeDotBaseToVertex;
             // Does the swept sphere collide against infinite edge?
             if (getLowestRoot(a, b, c, t, newT)) {
@@ -196,7 +197,7 @@ public abstract class Collisions {
             edgeDotVelocity = edge.dot(velocity);
             edgeDotBaseToVertex = edge.dot(baseToVertex);
             a = edgeSquaredLength * -velocitySquaredLength + edgeDotVelocity * edgeDotVelocity;
-            b = edgeSquaredLength * (2 * velocity.dot(baseToVertex)) - 2.0 * edgeDotVelocity * edgeDotBaseToVertex;
+            b = edgeSquaredLength * (2 * velocity.dot(baseToVertex)) - 2 * edgeDotVelocity * edgeDotBaseToVertex;
             c = edgeSquaredLength * (1 - baseToVertex.squaredLength()) + edgeDotBaseToVertex * edgeDotBaseToVertex;
             if (getLowestRoot(a, b, c, t, newT)) {
                 double f = (edgeDotVelocity * newT.val - edgeDotBaseToVertex) / edgeSquaredLength;
@@ -213,7 +214,7 @@ public abstract class Collisions {
             edgeDotVelocity = edge.dot(velocity);
             edgeDotBaseToVertex = edge.dot(baseToVertex);
             a = edgeSquaredLength * -velocitySquaredLength + edgeDotVelocity * edgeDotVelocity;
-            b = edgeSquaredLength * (2 * velocity.dot(baseToVertex)) - 2.0 * edgeDotVelocity * edgeDotBaseToVertex;
+            b = edgeSquaredLength * (2 * velocity.dot(baseToVertex)) - 2 * edgeDotVelocity * edgeDotBaseToVertex;
             c = edgeSquaredLength * (1 - baseToVertex.squaredLength()) + edgeDotBaseToVertex * edgeDotBaseToVertex;
             if (getLowestRoot(a, b, c, t, newT)) {
                 double f = (edgeDotVelocity * newT.val - edgeDotBaseToVertex) / edgeSquaredLength;
@@ -228,7 +229,7 @@ public abstract class Collisions {
         if (foundCollison == true) {
             // distance to collision: ’t’ is time of collision
             double distToCollision = t * colPackage.velocity.length();
-                // Does this triangle qualify for the closest hit?
+            // Does this triangle qualify for the closest hit?
             // it does if it’s the first hit or the closest
             if (colPackage.foundCollision == false || distToCollision < colPackage.nearestDistance) {
                 // Collision information nessesary for sliding
@@ -255,11 +256,11 @@ public abstract class Collisions {
         // Add gravity pull:
         // To remove gravity uncomment from here .....
         // Set the new R3 position (convert back from eSpace to R3
-//        collisionPackage.R3Position = finalPosition.multiply(collisionPackage.eRadius);
-//        collisionPackage.R3Velocity = gravity;
-//        eSpaceVelocity = gravity.divide(collisionPackage.eRadius);
-//        collisionRecursionDepth = 0;
-//        finalPosition = collideWithWorld(world, finalPosition, eSpaceVelocity);
+        collisionPackage.R3Position = finalPosition.multiply(collisionPackage.eRadius);
+        collisionPackage.R3Velocity = gravity;
+        eSpaceVelocity = gravity.divide(collisionPackage.eRadius);
+        collisionRecursionDepth = 0;
+        finalPosition = collideWithWorld(world, finalPosition, eSpaceVelocity);
         // ... to here
         // Convert final result back to R3:
         finalPosition = finalPosition.multiply(collisionPackage.eRadius);
@@ -267,16 +268,14 @@ public abstract class Collisions {
         collisionPackage.finalPoint = finalPosition;
         return collisionPackage;
     }
-    // Set this to match application scale..
-    static final double unitsPerMeter = 100;
+
     static double collisionRecursionDepth;
     static CollisionPacket collisionPackage;
 
     static Vector collideWithWorld(Room world, Vector pos, Vector vel) {
         // All hard-coded distances in this function is
         // scaled to fit the setting above..
-        double unitScale = unitsPerMeter / 100;
-        double veryCloseDistance = 0.005f * unitScale;
+        double veryCloseDistance = 0.05;
         // do we need to worry?
         if (collisionRecursionDepth > 5) {
             return pos;

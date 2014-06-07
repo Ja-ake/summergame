@@ -59,6 +59,6 @@ public class MovingEntity extends Entity {
         super.update();
         prevPos = pos;
         vel = vel.add(gravity);
-        pos = Collisions.collideAndSlide(room, pos, new Vector(6, 6, 6), vel, gravity);
+        pos = Collisions.collideAndSlide(room, pos, getBounds().size, vel, gravity);
     }
 }

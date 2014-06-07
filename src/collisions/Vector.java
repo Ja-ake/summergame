@@ -19,10 +19,16 @@ public class Vector {
     }
 
     public Vector divide(double d) {
+        if (d == 0) {
+            System.out.println("Division by 0");
+        }
         return new Vector(x / d, y / d, z / d);
     }
 
     public Vector divide(Vector v) {
+        if (v.length() == 0) {
+            System.out.println("Division by 0");
+        }
         return new Vector(x / v.x, y / v.y, z / v.z);
     }
 
@@ -48,6 +54,9 @@ public class Vector {
 
     public Vector setLength(double d) {
         double l = length();
+        if (l == 0) {
+            return new Vector(d, 0, 0);
+        }
         return new Vector(x * d / l, y * d / l, z * d / l);
     }
 

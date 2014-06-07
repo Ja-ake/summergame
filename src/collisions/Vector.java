@@ -55,6 +55,7 @@ public class Vector {
     public Vector setLength(double d) {
         double l = length();
         if (l == 0) {
+            System.out.println("No vector direction");
             return new Vector(d, 0, 0);
         }
         return new Vector(x * d / l, y * d / l, z * d / l);

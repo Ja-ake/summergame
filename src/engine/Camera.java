@@ -8,7 +8,7 @@ public class Camera {
 
     public static final Vector UP = new Vector(0, 0, 1);
     public static final float ASPECT_RATIO = 1;
-    public static final float FOV = 90;
+    public static final float FOV = 60;
 
     public Vector pos;
     public double xyDirection, zDirection;

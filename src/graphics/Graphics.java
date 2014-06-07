@@ -33,7 +33,7 @@ public abstract class Graphics {
         glBegin(GL_QUADS);
         {
             glTexCoord2d(0, 0);
-            glVertex3d(p1.x, p1.y, p1.z); //Height reversed because sprite y axis upside-down
+            glVertex3d(p1.x, p1.y, p1.z);
             glTexCoord2d(0, s.getTexture(index).getHeight());
             glVertex3d(p2.x, p2.y, p2.z);
             glTexCoord2d(s.getTexture(index).getWidth(), s.getTexture(index).getHeight());
@@ -44,39 +44,18 @@ public abstract class Graphics {
         glEnd();
         glPopMatrix();
     }
-    
+
     public static void drawSprite(Sprite s, double x, double y, double z, int index, double angle) {
-        glPushMatrix();
-        glEnable(GL_TEXTURE_2D);
-        s.getTexture(index).bind();
-        //Translate twice to rotate at center
-        glTranslated(x, y, z);
-        glRotated((double) (angle * 180 / Math.PI), 0, 0, 1);
-        glTranslated(-s.getWidth() / 2, -s.getHeight() / 2, 0);
-
-        //glColor3d(1, 1, 1);
-        glBegin(GL_QUADS);
-        {
-            glTexCoord2d(0, 0);
-            glVertex3d(0, s.getHeight(), 0); //Height reversed because sprite y axis upside-down
-            glTexCoord2d(0, s.getTexture(index).getHeight());
-            glVertex3d(0, 0, 0);
-            glTexCoord2d(s.getTexture(index).getWidth(), s.getTexture(index).getHeight());
-            glVertex3d(s.getWidth(), 0, 0);
-            glTexCoord2d(s.getTexture(index).getWidth(), 0);
-            glVertex3d(s.getWidth(), s.getHeight(), 0);
-        }
-        glEnd();
-        glPopMatrix();
+        drawSprite(s, x, y, z, index, angle, new Vector(0, 0, 1));
     }
-    
-    public static void drawSprite(Sprite s, double x, double y, double z, int index, double angle, Vector v) {
+
+    public static void drawSprite(Sprite s, double x, double y, double z, int index, double angle, Vector normal) {
         glPushMatrix();
         glEnable(GL_TEXTURE_2D);
         s.getTexture(index).bind();
         //Translate twice to rotate at center
         glTranslated(x, y, z);
-        glRotated((double) (angle * 180 / Math.PI), 0, 0, 1);
+        glRotated(angle * 180 / Math.PI, normal.x, normal.y, normal.z);
         glTranslated(-s.getWidth() / 2, -s.getHeight() / 2, 0);
 
         //glColor3d(1, 1, 1);
@@ -95,26 +74,4 @@ public abstract class Graphics {
         glPopMatrix();
     }
 
-//    public static void drawText(String s, double x, double y) {
-//        drawText(s, "Default", x, y, Color.black);
-//    }
-//    public static void drawText(String s, String font, double x, double y, Color c) {
-//        TextureImpl.bindNone();
-//        FontContainer.get(font).drawString((float) x, (float) y, s, c);
-//    }
-//    public static void fillRect(double x, double y, double w, double h, double r, double g, double b) {
-//        glPushMatrix();
-//        glDisable(GL_TEXTURE_2D);
-//        glColor3d(r, g, b);
-//        glTranslated(x, y, 0);
-//        glBegin(GL_QUADS);
-//        {
-//            glVertex3d(0, 0, 0);
-//            glVertex3d(w, 0, 0);
-//            glVertex3d(w, h, 0);
-//            glVertex3d(0, h, 0);
-//        }
-//        glEnd();
-//        glPopMatrix();
-//    }
 }

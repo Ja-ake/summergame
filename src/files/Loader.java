@@ -86,7 +86,7 @@ public class Loader {
         double[][] heightMap = new double[width][height];
         for (int i = 0; i < heightMap.length; i++) {
             for (int j = 0; j < heightMap[0].length; j++) {
-                heightMap[i][j] = 10 * n.multi(i, j, 4, .04) - 10;
+                heightMap[i][j] = 20 * n.multi(i, j, 5, .02) - 10;
             }
         }
         for (int i = 0; i < heightMap.length - 1; i++) {
@@ -98,7 +98,7 @@ public class Loader {
                 new Surface(v1, v2, v3, v4).addToRoom(room);
             }
         }
-        new Player(new Vector(0, 0, 20)).addToRoom(room);
+        new Player(new Vector(10, 10, 20)).addToRoom(room);
         return room;
     }
 

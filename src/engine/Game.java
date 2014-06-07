@@ -71,7 +71,7 @@ public class Game {
         SpriteContainer.create();
         FontContainer.create();
 
-        room = Loader.loadRandomTerrain(100, 100);
+        room = Loader.loadRandomTerrain(10, 10);
         camera = new Camera();
     }
 
@@ -86,7 +86,7 @@ public class Game {
         glShadeModel(GL_SMOOTH);   // Enable smooth shading
         //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
     }
-    
+
     public static Camera getCamera() {
         return camera;
     }

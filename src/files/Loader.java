@@ -80,10 +80,10 @@ public class Loader {
     }
 
     public static Room loadRandomTerrain(int width, int height) {
-        int detail = 8;
+        int detail = 32;
         Room room = new Room(width * detail, height * detail);
         Noise n = new Noise(Math.random());
-        double[][] heightMap = new double[100][100];
+        double[][] heightMap = new double[width][height];
         for (int i = 0; i < heightMap.length; i++) {
             for (int j = 0; j < heightMap[0].length; j++) {
                 heightMap[i][j] = 10 * n.multi(i, j, 4, .04) - 10;

@@ -9,19 +9,19 @@ import org.newdawn.slick.opengl.TextureImpl;
 
 public abstract class Graphics {
 
-    public static void drawLine(double x1, double y1, double z1, double x2, double y2, double z2) {
-        drawLine(x1, y1, z1, x2, y2, z2, 0, 0, 0);
+    public static void drawLine(Vector v1, Vector v2) {
+        drawLine(v1, v2, 0, 0, 0);
     }
 
-    public static void drawLine(double x1, double y1, double z1, double x2, double y2, double z2, double r, double g, double b) {
+    public static void drawLine(Vector v1, Vector v2, double r, double g, double b) {
         glPushMatrix();
         glDisable(GL_TEXTURE_2D);
         glLineWidth(2);
         glColor3d(r, g, b);
         glBegin(GL_LINES);
         {
-            glVertex3d(x1, y1, z1);
-            glVertex3d(x2, y2, z2);
+            glVertex3d(v1.x, v1.y, v1.z);
+            glVertex3d(v2.x, v2.y, v2.z);
         }
         glEnd();
         glPopMatrix();
@@ -32,7 +32,7 @@ public abstract class Graphics {
         glEnable(GL_TEXTURE_2D);
         s.getTexture(index).bind();
 
-        //glColor3d(1, 1, 1);
+        glColor3d(1, 1, 1);
         glBegin(GL_QUADS);
         {
             glTexCoord2d(0, 0);
@@ -48,8 +48,16 @@ public abstract class Graphics {
         glPopMatrix();
     }
 
-    public static void drawSprite(Sprite s, double x, double y, double z, int index, double angle) {
-        drawSprite(s, x, y, z, index, angle, new Vector(0, 0, 1));
+    public static void drawSprite(Sprite s, Vector pos, int index) {
+        drawSprite(s, pos, index, 0, null);
+    }
+
+    public static void drawSprite(Sprite s, double x, double y, double z, int index) {
+        drawSprite(s, x, y, z, index, 0, null);
+    }
+
+    public static void drawSprite(Sprite s, Vector pos, int index, double angle, Vector normal) {
+        drawSprite(s, pos.x, pos.y, pos.z, index, angle, normal);
     }
 
     public static void drawSprite(Sprite s, double x, double y, double z, int index, double angle, Vector normal) {
@@ -58,7 +66,9 @@ public abstract class Graphics {
         s.getTexture(index).bind();
         //Translate twice to rotate at center
         glTranslated(x, y, z);
-        glRotated(angle * 180 / Math.PI, normal.x, normal.y, normal.z);
+        if (angle != 0) {
+            glRotated(angle * 180 / Math.PI, normal.x, normal.y, normal.z);
+        }
         glTranslated(-s.getWidth() / 2, -s.getHeight() / 2, 0);
 
         glColor3d(1, 1, 1);

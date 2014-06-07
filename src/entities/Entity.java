@@ -46,7 +46,7 @@ public class Entity {
 
     public void draw() {
         if (sprite != null) {
-            Graphics.drawSprite(sprite, pos.x, pos.y, pos.z, (int) Math.round(imageIndex), 0);
+            Graphics.drawSprite(sprite, pos, (int) Math.round(imageIndex));
         }
     }
 

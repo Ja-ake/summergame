@@ -27,7 +27,12 @@ public class Surface extends Solid {
 
     @Override
     public void draw() {
-        Graphics.drawSprite(sprite, pos1, pos2, pos3, pos4, 0);
+        //Graphics.drawSprite(sprite, pos1, pos2, pos3, pos4, 0);
+        Graphics.drawLine(pos1, pos2, 1, 0, 0);
+        Graphics.drawLine(pos1, pos3, 1, 0, 0);
+        Graphics.drawLine(pos3, pos2, 1, 0, 0);
+        Graphics.drawLine(pos1, pos4, 1, 0, 0);
+        Graphics.drawLine(pos4, pos3, 1, 0, 0);
     }
 
     @Override

@@ -16,9 +16,9 @@ public class Wall extends Solid {
     @Override
     public void draw() {
         //Top
-        Graphics.drawSprite(sprite, pos.x, pos.y, pos.z + 16, (int) Math.round(imageIndex), 0);
+        Graphics.drawSprite(sprite, pos.x, pos.y, pos.z + 16, (int) Math.round(imageIndex));
         //Bottom
-        Graphics.drawSprite(sprite, pos.x, pos.y, pos.z - 16, (int) Math.round(imageIndex), 0);
+        Graphics.drawSprite(sprite, pos.x, pos.y, pos.z - 16, (int) Math.round(imageIndex));
 
         //Sides
         Graphics.drawSprite(sprite, pos.x, pos.y + 16, pos.z, (int) Math.round(imageIndex), Math.PI / 2, new Vector(1, 0, 0));

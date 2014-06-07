@@ -51,7 +51,32 @@ public abstract class Graphics {
         s.getTexture(index).bind();
         //Translate twice to rotate at center
         glTranslated(x, y, z);
-        glRotated((double) (angle * 180 / Math.PI), 0, 0, 1f);
+        glRotated((double) (angle * 180 / Math.PI), 0, 0, 1);
+        glTranslated(-s.getWidth() / 2, -s.getHeight() / 2, 0);
+
+        //glColor3d(1, 1, 1);
+        glBegin(GL_QUADS);
+        {
+            glTexCoord2d(0, 0);
+            glVertex3d(0, s.getHeight(), 0); //Height reversed because sprite y axis upside-down
+            glTexCoord2d(0, s.getTexture(index).getHeight());
+            glVertex3d(0, 0, 0);
+            glTexCoord2d(s.getTexture(index).getWidth(), s.getTexture(index).getHeight());
+            glVertex3d(s.getWidth(), 0, 0);
+            glTexCoord2d(s.getTexture(index).getWidth(), 0);
+            glVertex3d(s.getWidth(), s.getHeight(), 0);
+        }
+        glEnd();
+        glPopMatrix();
+    }
+    
+    public static void drawSprite(Sprite s, double x, double y, double z, int index, double angle, Vector v) {
+        glPushMatrix();
+        glEnable(GL_TEXTURE_2D);
+        s.getTexture(index).bind();
+        //Translate twice to rotate at center
+        glTranslated(x, y, z);
+        glRotated((double) (angle * 180 / Math.PI), 0, 0, 1);
         glTranslated(-s.getWidth() / 2, -s.getHeight() / 2, 0);
 
         //glColor3d(1, 1, 1);

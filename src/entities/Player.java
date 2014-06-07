@@ -19,6 +19,7 @@ public class Player extends MovingEntity {
     public void update() {
         super.update();
         System.out.println(pos);
+        System.out.println(vel);
         if (Keys.pressed(Keyboard.KEY_LEFT)) {
             xyFacing += .05;
         }
@@ -37,6 +38,10 @@ public class Player extends MovingEntity {
         }
         if (Keys.pressed(Keyboard.KEY_UP)) {
             setMotionRelative(.5, xyFacing, Math.PI / 2);
+        }
+        if (Keys.pressed(Keyboard.KEY_SPACE)) {
+            //vel = new Vector(vel.x, vel.y, 5);
+            vel = new Vector(vel.x, vel.y, 5);
         }
         vel = new Vector(vel.x * .5, vel.y * .5, vel.z);
         room.camera.pos = pos;

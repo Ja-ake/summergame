@@ -240,7 +240,7 @@ public abstract class Collisions {
         //} // if not backface
     }
 
-    public static Vector collideAndSlide(Room world, Vector position, Vector eRadius, Vector vel, Vector gravity) {
+    public static CollisionPacket collideAndSlide(Room world, Vector position, Vector eRadius, Vector vel, Vector gravity) {
         collisionPackage = new CollisionPacket();
         // Do collision detection:
         collisionPackage.eRadius = eRadius;
@@ -264,7 +264,8 @@ public abstract class Collisions {
         // Convert final result back to R3:
         finalPosition = finalPosition.multiply(collisionPackage.eRadius);
         // Move the entity (application specific function)
-        return finalPosition;
+        collisionPackage.finalPoint = finalPosition;
+        return collisionPackage;
     }
     // Set this to match application scale..
     static final double unitsPerMeter = 100;

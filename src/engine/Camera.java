@@ -41,7 +41,7 @@ public class Camera {
     public void setProjectionOrtho() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, 0, 1000, 1000, -1, 1);
+        glOrtho(0, 0, 1000, 1000, -100, 100);
         glMatrixMode(GL_MODELVIEW);
     }
 }

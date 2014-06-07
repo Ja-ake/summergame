@@ -4,12 +4,15 @@ import files.Loader;
 import graphics.FontContainer;
 import graphics.Graphics;
 import graphics.SpriteContainer;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import static org.lwjgl.opengl.EXTFogCoord.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
@@ -24,7 +27,7 @@ public class Game {
     private Room room;
     private static Camera camera;
 
-    public void calculateViewport() {
+    private void calculateViewport() {
         int displayWidth = Display.getWidth();
         int displayHeight = Display.getHeight();
         int drawWidth, drawHeight;
@@ -40,13 +43,13 @@ public class Game {
         glViewport(left, bottom, drawWidth, drawHeight);
     }
 
-    public void destroy() {
+    void destroy() {
         Mouse.destroy();
         Keyboard.destroy();
         Display.destroy();
     }
 
-    public void draw() {
+    private void draw() {
         calculateViewport();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         getCamera().setProjectionFPS();
@@ -54,7 +57,7 @@ public class Game {
         Graphics.drawText("" + fps, 100, 100);
     }
 
-    public void init() throws LWJGLException {
+    void init() throws LWJGLException {
         //Display
         setDisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT, false);
         Display.setVSyncEnabled(true);
@@ -64,45 +67,86 @@ public class Game {
         //Keyboard
         Keyboard.create();
         //Mouse
+        Mouse.setGrabbed(true);
         Mouse.create();
         //OpenGL
+        camera = new Camera();
+        camera.setProjectionFPS();
         initGL();
         //Sprites
         SpriteContainer.create();
         FontContainer.create();
 
         room = Loader.loadRandomTerrain(100, 100);
-        camera = new Camera();
     }
 
-    public void initGL() {
+    private void initGL() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(0, .3f, .8f, 1); // Set background color to black and opaque
-        glClearDepth(1);                   // Set background depth to farthest
+        //glClearDepth(1);                   // Set background depth to farthest
         glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-        glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
-        glShadeModel(GL_SMOOTH);   // Enable smooth shading
+        //glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
+        //glShadeModel(GL_SMOOTH);   // Enable smooth shading
+        glEnable(GL_FOG);
         //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+        FloatBuffer f = ByteBuffer.allocateDirect(32).asFloatBuffer();
+        float fogColor[] = {1, 1, 1, .5f};
+        f.put(fogColor);
+        glFog(GL_FOG_COLOR, f);
+        glFogi(GL_FOG_MODE, GL_LINEAR);
+        glFogf(GL_FOG_START, 10);
+        glFogf(GL_FOG_END, 100);
+        glFogi(GL_FOG_COORDINATE_SOURCE_EXT, GL_FRAGMENT_DEPTH_EXT);
+//        EXTFogCoord.GL_FOG_COORDINATE_EXT
+//        glFogi()
     }
 
     public static Camera getCamera() {
         return camera;
     }
 
-    public int getDelta() {
+    private int getDelta() {
         long time = getTime();
         int delta = (int) (time - lastFrame);
         lastFrame = time;
         return delta;
     }
 
-    public long getTime() {
+    private long getTime() {
         return (Sys.getTime() * 1000) / Sys.getTimerResolution();
     }
 
-    public void run() {
+    public static double mouseX() {
+        int displayWidth = Display.getWidth();
+        int displayHeight = Display.getHeight();
+        int drawWidth;
+        if ((double) displayWidth / displayHeight > Camera.ASPECT_RATIO) {
+            drawWidth = (int) (displayHeight * Camera.ASPECT_RATIO);
+        } else {
+            drawWidth = displayWidth;
+        }
+        int left = (displayWidth - drawWidth) / 2;
+
+        return Mouse.getX() - left;
+    }
+
+    public static double mouseY() {
+        int displayWidth = Display.getWidth();
+        int displayHeight = Display.getHeight();
+        int drawHeight;
+        if ((double) displayWidth / displayHeight > Camera.ASPECT_RATIO) {
+            drawHeight = displayHeight;
+        } else {
+            drawHeight = (int) (displayWidth / Camera.ASPECT_RATIO);
+        }
+        int bottom = (displayHeight - drawHeight) / 2;
+
+        return Mouse.getY() - bottom;
+    }
+
+    void run() {
         getDelta();
         lastFPS = getTime();
         while (!Display.isCloseRequested() && !Keys.pressed(Keyboard.KEY_ESCAPE)) {
@@ -111,7 +155,7 @@ public class Game {
         }
     }
 
-    public void setDisplayMode(int width, int height, boolean fullscreen) {
+    private void setDisplayMode(int width, int height, boolean fullscreen) {
         // return if requested DisplayMode is already set
         if ((Display.getDisplayMode().getWidth() == width)
                 && (Display.getDisplayMode().getHeight() == height)
@@ -155,7 +199,7 @@ public class Game {
         }
     }
 
-    public void step(int delta) {
+    private void step(int delta) {
         update();
         draw();
         updateFPS();
@@ -163,7 +207,7 @@ public class Game {
         Display.sync(SPEED);
     }
 
-    public void update() {
+    private void update() {
         Keys.update();
         MouseInput.update();
         if (Keys.clicked(Keyboard.KEY_F11)) {
@@ -172,7 +216,7 @@ public class Game {
         room.update();
     }
 
-    public void updateFPS() {
+    private void updateFPS() {
         if (getTime() - lastFPS > 1000) {
             Display.setTitle("FPS: " + fps);
             fps = 0;

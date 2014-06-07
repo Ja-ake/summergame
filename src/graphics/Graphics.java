@@ -92,12 +92,12 @@ public abstract class Graphics {
     }
 
     public static void drawText(String s, String font, double x, double y, Color c) {
-        Game.getCamera().setProjectionOrtho();
         glPushMatrix();
+        Game.getCamera().setProjectionOrtho();
         TextureImpl.bindNone();
         FontContainer.get(font).drawString((float) x, (float) y, s, c);
-        glPopMatrix();
         Game.getCamera().setProjectionFPS();
+        glPopMatrix();
     }
 
 }

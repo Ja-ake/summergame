@@ -11,17 +11,17 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 public class Room {
-    
+
     public ArrayList<Entity> entityArray;
     public int width;
     public int height;
-    
+
     public Room(int w, int h) {
         entityArray = new ArrayList();
         width = w;
         height = h;
     }
-    
+
     public Entity addEntity(Entity e) {
         if (!entityArray.contains(e)) {
             int pos = 0;
@@ -33,7 +33,7 @@ public class Room {
         }
         return null;
     }
-    
+
     public void checkCollision(CollisionPacket c) {
         Entity temp = new Entity(c.R3Position.add(c.R3Velocity));
         temp.setBounds(c.eRadius);
@@ -46,7 +46,7 @@ public class Room {
             }
         }
     }
-    
+
     public void checkDepth(Entity e) {
         if (entityArray.contains(e)) {
             entityArray.remove(e);
@@ -57,53 +57,25 @@ public class Room {
             entityArray.add(pos, e);
         }
     }
-    
+
     public void draw() {
         for (Entity e : entityArray) {
             e.draw();
         }
     }
-    
+
     public int getHeight() {
         return height;
     }
-    
+
     public int getWidth() {
         return width;
     }
-    
+
     public boolean inRoom(double x, double y) {
         return x >= 0 && y >= 0 && x < width && y < height;
     }
-    
-    public double mouseX() {
-        int displayWidth = Display.getWidth();
-        int displayHeight = Display.getHeight();
-        int drawWidth;
-        if ((double) displayWidth / displayHeight > Camera.ASPECT_RATIO) {
-            drawWidth = (int) (displayHeight * Camera.ASPECT_RATIO);
-        } else {
-            drawWidth = displayWidth;
-        }
-        int left = (displayWidth - drawWidth) / 2;
-        
-        return Mouse.getX() - left;
-    }
-    
-    public double mouseY() {
-        int displayWidth = Display.getWidth();
-        int displayHeight = Display.getHeight();
-        int drawHeight;
-        if ((double) displayWidth / displayHeight > Camera.ASPECT_RATIO) {
-            drawHeight = displayHeight;
-        } else {
-            drawHeight = (int) (displayWidth / Camera.ASPECT_RATIO);
-        }
-        int bottom = (displayHeight - drawHeight) / 2;
-        
-        return Mouse.getY() - bottom;
-    }
-    
+
     public void orderByDepth() {
         for (int i = 0; i < entityArray.size(); i++) {
             for (int j = i + 1; j < entityArray.size(); j++) {
@@ -115,7 +87,7 @@ public class Room {
             }
         }
     }
-    
+
     public boolean position(Class c, Vector v) {
         for (int i = 0; i < entityArray.size(); i++) {
             Entity e = entityArray.get(i);
@@ -129,15 +101,15 @@ public class Room {
         }
         return false;
     }
-    
+
     public boolean positionEmpty(Vector v) {
         return !positionSolid(v) && !position(Entity.class, v);
     }
-    
+
     public boolean positionSolid(Vector v) {
         return position(Solid.class, v);
     }
-    
+
     public void update() {
         for (Entity e : new ArrayList<>(entityArray)) {
             e.update();

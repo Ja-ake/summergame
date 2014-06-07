@@ -11,11 +11,14 @@ public class Player extends MovingEntity {
 
     private double xyFacing;
     private double zFacing;
+    private boolean onWall;
+    private ControlPacket controls;
 
     public Player(Vector pos) {
         super(pos);
         zFacing = Math.PI / 2;
         setBounds(new Vector(6, 6, 10));
+        controls = new ControlPacket();
     }
 
     @Override
@@ -26,41 +29,35 @@ public class Player extends MovingEntity {
     @Override
     public void update() {
         super.update();
-//        pos = new Vector(pos.x + .0005, pos.y + .0005, pos.z + .0005);
-//        pos = new Vector(pos.x - pos.x % .001, pos.y - pos.y % .001, pos.z - pos.z % .001);
-//        if (pos.z < 10) {
-//            System.out.println(pos);
-//            System.out.println(vel);
-//        }
-        if (Keys.pressed(Keyboard.KEY_LEFT)) {
-            xyFacing += .05;
+        controls.update();
+        onWall = placeSolid(new Vector(pos.x, pos.y, pos.z - 1));
+        move();
+        if (onWall) {
+            vel = new Vector(vel.x * .5, vel.y * .5, vel.z);
         }
-        if (Keys.pressed(Keyboard.KEY_RIGHT)) {
-            xyFacing -= .05;
+        if (vel.length() > 20) {
+            vel = vel.setLength(20);
         }
-        if (Keys.pressed(Keyboard.KEY_W)) {
-            if (zFacing > .05) {
-                zFacing -= .05;
-            }
-        }
-        if (Keys.pressed(Keyboard.KEY_S)) {
-            if (zFacing < Math.PI - .05) {
-                zFacing += .05;
-            }
-        }
-        if (Keys.pressed(Keyboard.KEY_UP)) {
-            setMotionRelative(2, xyFacing, Math.PI / 2);
-        }
-        if (Keys.pressed(Keyboard.KEY_DOWN)) {
-            setMotionRelative(-2, xyFacing, Math.PI / 2);
-        }
-        if (Keys.pressed(Keyboard.KEY_SPACE)) {
-            pos = new Vector(pos.x, pos.y, 15);
-        }
-        vel = new Vector(vel.x * .5, vel.y * .5, vel.z);
         Game.getCamera().pos = pos;
         Game.getCamera().xyDirection = xyFacing;
         Game.getCamera().zDirection = zFacing;
+    }
+
+    public void move() {
+        if (controls.forward) {
+            setSpeedDirection(4, xyFacing, zFacing);
+        }
+        if (controls.back) {
+            setSpeedDirection(-4, xyFacing, zFacing);
+        }
+        xyFacing -= controls.mouseX / 400;
+        zFacing -= controls.mouseY / 400;
+        if (zFacing < .01) {
+            zFacing = .01;
+        }
+        if (zFacing > Math.PI - .01) {
+            zFacing = Math.PI - .01;
+        }
     }
 
 }

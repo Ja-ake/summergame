@@ -2,6 +2,7 @@ package entities;
 
 import collisions.CollisionPacket;
 import collisions.Collisions;
+import collisions.Triangle;
 import collisions.Vector;
 
 public class MovingEntity extends Entity {
@@ -15,7 +16,7 @@ public class MovingEntity extends Entity {
         this.pos = new Vector(pos.x + .5, pos.y, pos.z);
         prevPos = pos;
         vel = new Vector(0, 0, 0);
-        gravity = new Vector(0, 0, -.1);
+        gravity = new Vector(0, 0, -.2);
     }
 
     public Vector getPrevPos() {
@@ -32,6 +33,23 @@ public class MovingEntity extends Entity {
 
     public double getZDirection() {
         return Math.acos(vel.z / getSpeed().length());
+    }
+
+    public boolean placeSolid(Vector newPos) {
+        CollisionPacket c = new CollisionPacket();
+        c.R3Position = newPos;
+        c.R3Velocity = new Vector(0, 0, 0);
+        c.eRadius = getBounds().getSize();
+        c.basePoint = pos.divide(c.eRadius);
+        c.velocity = new Vector(0, 0, 0);
+        for (Solid s : touching(Solid.class)) {
+            for (Triangle t : s.getTriangles()) {
+                if (t.couldCollide(getBounds())) {
+                    Collisions.checkTriangle(c, t.p1.divide(c.eRadius), t.p2.divide(c.eRadius), t.p3.divide(c.eRadius));
+                }
+            }
+        }
+        return c.foundCollision;
     }
 
     public void setDirection(double xyDirection, double zDirection) {

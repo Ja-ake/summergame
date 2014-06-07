@@ -98,10 +98,6 @@ public class Entity {
         return false;
     }
 
-    public boolean placeSolid(Vector v) {
-        return place(Solid.class, v);
-    }
-
     public void removeSelf() {
         room.entityArray.remove(this);
     }

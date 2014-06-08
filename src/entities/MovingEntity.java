@@ -2,7 +2,6 @@ package entities;
 
 import collisions.CollisionPacket;
 import collisions.Collisions;
-import collisions.Triangle;
 import collisions.Vector;
 
 public class MovingEntity extends Entity {
@@ -10,6 +9,8 @@ public class MovingEntity extends Entity {
     protected Vector prevPos;
     protected Vector vel;
     protected Vector gravity;
+    protected double flatFriction;
+    protected double percentFriction;
 
     public MovingEntity(Vector pos) {
         super(pos);
@@ -17,6 +18,18 @@ public class MovingEntity extends Entity {
         prevPos = pos;
         vel = new Vector(0, 0, 0);
         gravity = new Vector(0, 0, -.2);
+    }
+
+    public void collideWithSolid(CollisionPacket c) {
+    }
+
+    protected void friction() {
+        vel = new Vector(vel.x * (1 - percentFriction), vel.y * (1 - percentFriction), vel.z);
+        if (vel.length() > flatFriction) {
+            vel = vel.setLength(vel.length() - flatFriction);
+        } else {
+            vel = new Vector(0, 0, 0);
+        }
     }
 
     public Vector getPrevPos() {
@@ -45,7 +58,11 @@ public class MovingEntity extends Entity {
         c.basePoint = pos.divide(c.eRadius);
         c.foundCollision = false;
         room.checkCollision(c);
-        return c.foundCollision;
+        if (c.foundCollision) {
+            return true;
+            //return Math.abs(c.intersectionNormal.z) > .5;
+        }
+        return false;
     }
 
     public void setDirection(double xyDirection, double zDirection) {
@@ -77,7 +94,7 @@ public class MovingEntity extends Entity {
         CollisionPacket c = Collisions.collideAndSlide(room, pos, getBounds().getSize(), vel, gravity);
         pos = c.finalPoint;
         if (c.foundCollision) {
-            vel = new Vector(0, 0, 0);
+            collideWithSolid(c);
         }
     }
 }

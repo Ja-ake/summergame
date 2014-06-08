@@ -14,10 +14,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public class Loader {
-
+    
     public static final String ROOMS_PATH = "rooms\\";
     public static final int BLOCK_SIZE = 32;
-
+    
     public static Room loadText(String name) {
         try {
             String path = ROOMS_PATH + name + ".txt";
@@ -39,7 +39,7 @@ public class Loader {
             return null;
         }
     }
-
+    
     public static Room loadImage(String name) {
         try {
             String path = ROOMS_PATH + name + ".png";
@@ -78,16 +78,16 @@ public class Loader {
                 break;
         }
     }
-
+    
     public static Room loadRandomTerrain(int width, int height) {
-        int detail = 16;
-        int surfaceSize = 32;
+        int detail = 4;
+        int surfaceSize = 64;
         Room room = new Room(width * detail, height * detail);
         Noise n = new Noise(100 * Math.random());
         double[][] heightMap = new double[width][height];
         for (int i = 0; i < heightMap.length; i++) {
             for (int j = 0; j < heightMap[0].length; j++) {
-                heightMap[i][j] = 100 * n.multi(i, j, 4, .01);
+                heightMap[i][j] = 300 * n.multi(i, j, 6, .003);
             }
         }
         for (int i = 0; i < heightMap.length - surfaceSize; i += surfaceSize) {
@@ -101,10 +101,10 @@ public class Loader {
                 new Surface(a).addToRoom(room);
             }
         }
-        new Player(new Vector(width * detail / 2, height * detail / 2, 100)).addToRoom(room);
+        new Player(vectorAt(heightMap, width / 2, height / 2, detail).add(new Vector(0, 0, 20))).addToRoom(room);
         return room;
     }
-
+    
     private static Vector vectorAt(double[][] heightMap, int i, int j, int detail) {
         return new Vector(i * detail, j * detail, heightMap[i][j]);
     }

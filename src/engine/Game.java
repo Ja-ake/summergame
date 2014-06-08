@@ -92,16 +92,16 @@ public class Game {
         //glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
         //glShadeModel(GL_SMOOTH);   // Enable smooth shading
         //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
-        glMatrixMode(GL_PROJECTION);
+        //glMatrixMode(GL_PROJECTION);
         glEnable(GL_FOG);
         FloatBuffer f = BufferUtils.createFloatBuffer(4);
-        //f.put(.6f).put(.6f).put(.8f).put(1).flip();
-        f.put(1).put(1).put(1).put(1).flip();
+        f.put(.6f).put(.6f).put(.8f).put(1).flip();
+//        f.put(1).put(1).put(1).put(1).flip();
         glFog(GL_FOG_COLOR, f);
         glFogi(GL_FOG_MODE, GL_LINEAR);
-        glFogf(GL_FOG_DENSITY, .003f);
-        glFogf(GL_FOG_START, 1);
-        glFogf(GL_FOG_END, 1500);
+        glFogf(GL_FOG_DENSITY, .001f);
+        glFogf(GL_FOG_START, 10);
+        glFogf(GL_FOG_END, 5000);
         glFogi(GL_FOG_COORDINATE_SOURCE_EXT, GL_FRAGMENT_DEPTH_EXT);
         glHint(GL_FOG_HINT, GL_NICEST);
     }

@@ -1,5 +1,6 @@
 package entities;
 
+import collisions.CollisionPacket;
 import collisions.Vector;
 import engine.Game;
 import graphics.Graphics;
@@ -10,13 +11,21 @@ public class Player extends MovingEntity {
     private double xyFacing;
     private double zFacing;
     private boolean onWall;
-    private ControlPacket controls;
+    private final ControlPacket controls;
 
     public Player(Vector pos) {
         super(pos);
         zFacing = Math.PI / 2;
         setBounds(new Vector(6, 6, 10));
         controls = new ControlPacket();
+        flatFriction = .05;
+        percentFriction = .2;
+    }
+
+    @Override
+    public void collideWithSolid(CollisionPacket c) {
+        double speed = vel.length();
+        vel = vel.cross(c.intersectionNormal).cross(c.intersectionNormal).setLength(speed).multiply(-.9);
     }
 
     @Override
@@ -24,36 +33,19 @@ public class Player extends MovingEntity {
         Graphics.drawText("Hello", "Default", 200, 100, Color.green);
     }
 
-    @Override
-    public void update() {
-        super.update();
-        controls.update();
-        onWall = placeSolid(new Vector(pos.x, pos.y, pos.z - 1));
-        move();
-        if (onWall) {
-            vel = new Vector(vel.x * .5, vel.y * .5, vel.z);
-        }
-        if (vel.length() > 20) {
-            vel = vel.setLength(20);
-        }
-        Game.getCamera().pos = pos;
-        Game.getCamera().xyDirection = xyFacing;
-        Game.getCamera().zDirection = zFacing;
-    }
-
     public void move() {
         double moveSpeed;
         if (controls.sprint) {
-            moveSpeed = 4;
+            moveSpeed = .4;
         } else {
-            moveSpeed = 2;
+            moveSpeed = .2;
         }
         if (onWall) {
             if (controls.forward) {
-                setMotionRelative(moveSpeed, xyFacing, zFacing);
+                setMotionRelative(moveSpeed, xyFacing, Math.PI / 2);
             }
             if (controls.back) {
-                setMotionRelative(moveSpeed, xyFacing, zFacing + Math.PI);
+                setMotionRelative(moveSpeed, xyFacing + Math.PI, Math.PI / 2);
             }
             if (controls.right) {
                 setMotionRelative(moveSpeed, xyFacing + Math.PI * 3 / 2, Math.PI / 2);
@@ -73,6 +65,21 @@ public class Player extends MovingEntity {
         if (zFacing > Math.PI - .2) {
             zFacing = Math.PI - .2;
         }
+    }
+
+    @Override
+    public void update() {
+        controls.update();
+        onWall = placeSolid(new Vector(pos.x, pos.y, pos.z - 1));
+        move();
+        if (onWall) friction();
+        if (vel.length() > 20) {
+            vel = vel.setLength(20);
+        }
+        super.update();
+        Game.getCamera().pos = pos;
+        Game.getCamera().xyDirection = xyFacing;
+        Game.getCamera().zDirection = zFacing;
     }
 
 }

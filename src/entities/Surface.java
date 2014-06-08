@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Surface extends Solid {
 
-    private static final int TRIANGLE_DETAIL = 5;
+    private static final int TRIANGLE_DETAIL = 1;
     public static boolean DRAW_MESH = false;
 
     private final Vector[][] points;
@@ -49,14 +49,18 @@ public class Surface extends Solid {
             Graphics.drawLine(points[0][0], points[0][points[0].length - 1]);
         } else if (d < 200) {
             drawDetail(1);
-        } else if (d < 500) {
-            drawDetail(2);
-        } else if (d < 1000) {
+        } else if (d < 400) {
             drawDetail(4);
-        } else if (d < 2000) {
+        } else if (d < 500) {
             drawDetail(8);
-        } else {
+        } else if (d < 1000) {
+            drawDetail(16);
+        } else if (d < 2000) {
             drawDetail(32);
+        } else if (d < 5000) {
+            drawDetail(64);
+        } else {
+            //drawDetail(32);
         }
     }
 

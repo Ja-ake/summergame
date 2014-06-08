@@ -235,6 +235,7 @@ public abstract class Collisions {
                 // Collision information nessesary for sliding
                 colPackage.nearestDistance = distToCollision;
                 colPackage.intersectionPoint = collisionPoint;
+                colPackage.intersectionNormal = trianglePlane.normal;
                 colPackage.foundCollision = true;
             }
         }

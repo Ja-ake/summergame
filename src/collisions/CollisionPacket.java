@@ -14,4 +14,5 @@ public class CollisionPacket {
     public double nearestDistance;
     public Vector intersectionPoint;
     public Vector finalPoint;
+    public Vector intersectionNormal;
 };

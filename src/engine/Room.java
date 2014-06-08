@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class Room {
 
     public ArrayList<Entity> entityArray;
-    public int width;
-    public int height;
+    private int width;
+    private int height;
 
     public Room(int w, int h) {
         entityArray = new ArrayList();
@@ -20,17 +20,18 @@ public class Room {
         height = h;
     }
 
-    public Entity addEntity(Entity e) {
-        if (!entityArray.contains(e)) {
-            int pos = 0;
-            while (pos < entityArray.size() && entityArray.get(pos).getDepth() < e.getDepth()) {
-                pos++;
-            }
-            entityArray.add(pos, e);
-            return e;
-        }
-        return null;
-    }
+//    public Entity addEntity(Entity e) {
+//        if (!entityArray.contains(e)) {
+//            int pos = 0;
+//            while (pos < entityArray.size() && entityArray.get(pos).getDepth() < e.getDepth()) {
+//                pos++;
+//            }
+//            entityArray.add(pos, e);
+//        entityArray.add(e);
+//        return e;
+//        }
+//        return null;
+//    }
 
     public void checkCollision(CollisionPacket c) {
         Entity temp = new Entity(c.R3Position.add(c.R3Velocity));

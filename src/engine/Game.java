@@ -77,7 +77,7 @@ public class Game {
         SpriteContainer.create();
         FontContainer.create();
 
-        room = Loader.loadRandomTerrain(100, 100);
+        room = Loader.loadRandomTerrain(500, 500);
     }
 
     private void initGL() {
@@ -94,7 +94,7 @@ public class Game {
         glMatrixMode(GL_PROJECTION);
         glEnable(GL_FOG);
         FloatBuffer f = BufferUtils.createFloatBuffer(4);
-        f.put(.8f).put(.8f).put(.8f).put(1).flip();
+        f.put(.6f).put(.6f).put(.8f).put(1).flip();
         glFog(GL_FOG_COLOR, f);
         glFogi(GL_FOG_MODE, GL_LINEAR);
         glFogf(GL_FOG_DENSITY, .003f);

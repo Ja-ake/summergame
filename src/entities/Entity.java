@@ -2,6 +2,7 @@ package entities;
 
 import collisions.RectPrism;
 import collisions.Vector;
+import engine.Game;
 import engine.Room;
 import graphics.Graphics;
 import graphics.SpriteContainer;
@@ -29,7 +30,8 @@ public class Entity {
 
     public void addToRoom(Room r) {
         room = r;
-        r.addEntity(this);
+        r.entityArray.add(this);
+//        r.addEntity(this);
     }
 
     public boolean collisionOther(Entity other) {
@@ -45,8 +47,10 @@ public class Entity {
     }
 
     public void draw() {
-        if (sprite != null) {
-            Graphics.drawSprite(sprite, pos, (int) Math.round(imageIndex));
+        if (distanceTo(Game.getCamera().pos) < 1000) {
+            if (sprite != null) {
+                Graphics.drawSprite(sprite, pos, (int) Math.round(imageIndex));
+            }
         }
     }
 
@@ -117,15 +121,18 @@ public class Entity {
 
     public <E extends Entity> ArrayList<E> touching(Class<E> c) {
         ArrayList<E> ae = new ArrayList();
-        for (int i = 0; i < room.entityArray.size(); i++) {
-            Entity e = room.entityArray.get(i);
-            if (e != null) {
-                if (c.isInstance(e)) {
+        for (Entity e : room.entityArray) {
+//        for (int i = 0; i < room.entityArray.size(); i++) {
+//            Entity e = room.entityArray.get(i);
+//            if (e != null) {
+            if (c.isInstance(e)) {
+                if (distanceTo(e) < 100) {
                     if (collisionOther(e)) {
                         ae.add((E) e);
                     }
                 }
             }
+//            }
         }
         return ae;
     }

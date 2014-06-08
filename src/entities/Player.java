@@ -42,18 +42,15 @@ public class Player extends MovingEntity {
     }
 
     public void move() {
+        double moveSpeed;
+        if (controls.sprint) {
+            moveSpeed = 4;
+        } else {
+            moveSpeed = 2;
+        }
         if (onWall) {
-            double moveSpeed;
-            if (controls.sprint) {
-                moveSpeed = 4;
-            } else {
-                moveSpeed = 2;
-            }
             if (controls.forward) {
                 setMotionRelative(moveSpeed, xyFacing, zFacing);
-            }
-            if (controls.back) {
-                setMotionRelative(moveSpeed, xyFacing, zFacing + Math.PI);
             }
             if (controls.left) {
                 setMotionRelative(moveSpeed, xyFacing + Math.PI * 3 / 2, Math.PI);
@@ -64,6 +61,9 @@ public class Player extends MovingEntity {
             if (controls.jump) {
                 vel = new Vector(vel.x, vel.y, 4);
             }
+        }
+        if (controls.back) {
+            setMotionRelative(moveSpeed, xyFacing, zFacing + Math.PI);
         }
         xyFacing -= controls.mouseX / 400;
         zFacing -= controls.mouseY / 400;

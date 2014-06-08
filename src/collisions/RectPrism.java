@@ -89,4 +89,9 @@ public class RectPrism {
     public void setSize(Vector size) {
         this.size = size;
     }
+
+    @Override
+    public String toString() {
+        return "center: " + getCenter() + " size: " + getSize();
+    }
 }

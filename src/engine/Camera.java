@@ -25,11 +25,15 @@ public class Camera {
         double z = pos.z + Math.cos(zDirection);
         return new Vector(x, y, z);
     }
+    
+    public int getRenderDistance() {
+        return 1000000;
+    }
 
     public void setProjectionFPS() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(FOV, ASPECT_RATIO, 0.1f, 1000);
+        gluPerspective(FOV, ASPECT_RATIO, 0.1f, getRenderDistance());
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         gluLookAt((float) pos.x, (float) pos.y, (float) pos.z,

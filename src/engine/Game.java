@@ -1,5 +1,6 @@
 package engine;
 
+import entities.Surface;
 import files.Loader;
 import graphics.FontContainer;
 import graphics.Graphics;
@@ -77,7 +78,7 @@ public class Game {
         SpriteContainer.create();
         FontContainer.create();
 
-        room = Loader.loadRandomTerrain(500, 500);
+        room = Loader.loadRandomTerrain(1000, 1000);
     }
 
     private void initGL() {
@@ -94,12 +95,13 @@ public class Game {
         glMatrixMode(GL_PROJECTION);
         glEnable(GL_FOG);
         FloatBuffer f = BufferUtils.createFloatBuffer(4);
-        f.put(.6f).put(.6f).put(.8f).put(1).flip();
+        //f.put(.6f).put(.6f).put(.8f).put(1).flip();
+        f.put(1).put(1).put(1).put(1).flip();
         glFog(GL_FOG_COLOR, f);
         glFogi(GL_FOG_MODE, GL_LINEAR);
         glFogf(GL_FOG_DENSITY, .003f);
         glFogf(GL_FOG_START, 1);
-        glFogf(GL_FOG_END, 1000);
+        glFogf(GL_FOG_END, 1500);
         glFogi(GL_FOG_COORDINATE_SOURCE_EXT, GL_FRAGMENT_DEPTH_EXT);
         glHint(GL_FOG_HINT, GL_NICEST);
     }
@@ -214,6 +216,9 @@ public class Game {
         Mouse.setGrabbed(Display.isVisible());
         if (Keys.clicked(Keyboard.KEY_F11)) {
             setDisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT, !Display.isFullscreen());
+        }
+        if (Keys.clicked(Keyboard.KEY_F)) {
+            Surface.DRAW_MESH = !Surface.DRAW_MESH;
         }
         room.update();
     }

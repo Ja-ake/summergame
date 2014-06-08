@@ -1,5 +1,6 @@
 package entities;
 
+import collisions.RectPrism;
 import collisions.Triangle;
 import collisions.Vector;
 import graphics.Graphics;
@@ -30,6 +31,17 @@ public class Wall extends Solid {
     @Override
     public ArrayList<Triangle> getTriangles() {
         return bounds.getTriangles();
+    }
+
+    @Override
+    public ArrayList<Triangle> getTrianglesTouching(RectPrism rp) {
+        ArrayList<Triangle> r = new ArrayList();
+        for (Triangle t : getTriangles()) {
+            if (t.couldCollide(rp)) {
+                r.add(t);
+            }
+        }
+        return r;
     }
 
 }

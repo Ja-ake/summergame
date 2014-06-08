@@ -52,18 +52,18 @@ public class Player extends MovingEntity {
             if (controls.forward) {
                 setMotionRelative(moveSpeed, xyFacing, zFacing);
             }
-            if (controls.left) {
-                setMotionRelative(moveSpeed, xyFacing + Math.PI * 3 / 2, Math.PI);
+            if (controls.back) {
+                setMotionRelative(moveSpeed, xyFacing, zFacing + Math.PI);
             }
             if (controls.right) {
-                setMotionRelative(moveSpeed, xyFacing + Math.PI / 2, Math.PI);
+                setMotionRelative(moveSpeed, xyFacing + Math.PI * 3 / 2, Math.PI / 2);
+            }
+            if (controls.left) {
+                setMotionRelative(moveSpeed, xyFacing + Math.PI / 2, Math.PI / 2);
             }
             if (controls.jump) {
                 vel = new Vector(vel.x, vel.y, 4);
             }
-        }
-        if (controls.back) {
-            setMotionRelative(moveSpeed, xyFacing, zFacing + Math.PI);
         }
         xyFacing -= controls.mouseX / 400;
         zFacing -= controls.mouseY / 400;

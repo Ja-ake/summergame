@@ -18,7 +18,6 @@ public class Entity {
     protected double imageSpeed;
 
     protected int ticks;
-    protected int depth;
     protected Room room;
 
     public Entity(Vector pos) {
@@ -30,7 +29,7 @@ public class Entity {
 
     public void addToRoom(Room r) {
         room = r;
-        r.entityArray.add(this);
+        r.addEntity(this);
 //        r.addEntity(this);
     }
 
@@ -62,18 +61,14 @@ public class Entity {
         return bounds;
     }
 
-    public int getDepth() {
-        return depth;
-    }
-
     public Vector getPos() {
         return pos;
     }
 
     public <E extends Entity> E nearest(Class<E> c) {
         E maxEntity = null;
-        for (int i = 0; i < room.entityArray.size(); i++) {
-            Entity e = room.entityArray.get(i);
+        for (int i = 0; i < room.getNearbyEntities(pos.x, pos.y, 50).size(); i++) {
+            Entity e = room.getNearbyEntities(pos.x, pos.y, 50).get(i);
             if (e != null && e != this) {
                 if (c.isInstance(e)) {
                     if (distanceTo(e) < distanceTo(maxEntity) || maxEntity == null) {
@@ -88,7 +83,7 @@ public class Entity {
     public boolean place(Class c, Vector v) {
         Vector oldPos = pos;
         pos = v;
-        for (Entity e : room.entityArray) {
+        for (Entity e : room.getNearbyEntities(pos.x, pos.y, 50)) {
             if (e != this) {
                 if (c.isInstance(e)) {
                     if (collisionOther(e)) {
@@ -103,16 +98,11 @@ public class Entity {
     }
 
     public void removeSelf() {
-        room.entityArray.remove(this);
+        room.removeEntity(this);
     }
 
     public void setBounds(Vector size) {
         bounds.setSize(size);
-    }
-
-    public void setDepth(int d) {
-        depth = d;
-        room.checkDepth(this);
     }
 
     public void setSprite(String name) {
@@ -121,18 +111,12 @@ public class Entity {
 
     public <E extends Entity> ArrayList<E> touching(Class<E> c) {
         ArrayList<E> ae = new ArrayList();
-        for (Entity e : room.entityArray) {
-//        for (int i = 0; i < room.entityArray.size(); i++) {
-//            Entity e = room.entityArray.get(i);
-//            if (e != null) {
+        for (Entity e : room.getNearbyEntities(pos.x, pos.y, 2000)) {
             if (c.isInstance(e)) {
-                if (distanceTo(e) < 100) {
-                    if (collisionOther(e)) {
-                        ae.add((E) e);
-                    }
+                if (collisionOther(e)) {
+                    ae.add((E) e);
                 }
             }
-//            }
         }
         return ae;
     }

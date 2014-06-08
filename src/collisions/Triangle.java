@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Triangle {
 
-    public Vector p1, p2, p3;
+    public final Vector p1, p2, p3;
 
     public Triangle(Vector p1, Vector p2, Vector p3) {
         this.p1 = p1;
@@ -41,6 +41,20 @@ public class Triangle {
             r.addAll(new Triangle(p2, p3, p1.add(p2).divide(2)).getSubtriangles(n - 1));
             return r;
         }
+    }
+
+    public ArrayList<Triangle> getSubtrianglesTouching(int n, RectPrism rp) {
+        if (couldCollide(rp))
+        if (n == 0) {
+            ArrayList<Triangle> r = new ArrayList();
+            r.add(this);
+            return r;
+        } else {
+            ArrayList<Triangle> r = new ArrayList();
+            r.addAll(new Triangle(p1, p3, p1.add(p2).divide(2)).getSubtriangles(n - 1));
+            r.addAll(new Triangle(p2, p3, p1.add(p2).divide(2)).getSubtriangles(n - 1));
+            return r;
+        }else return new ArrayList();
     }
 
     @Override

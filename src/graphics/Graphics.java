@@ -1,5 +1,6 @@
 package graphics;
 
+import collisions.Triangle;
 import collisions.Vector;
 import engine.Game;
 import engine.Sprite;
@@ -98,6 +99,12 @@ public abstract class Graphics {
         FontContainer.get(font).drawString((float) x, (float) y, s, c);
         Game.getCamera().setProjectionFPS();
         glPopMatrix();
+    }
+
+    public static void drawTriangle(Triangle t, double r, double g, double b) {
+        drawLine(t.p1, t.p2, r, g, b);
+        drawLine(t.p3, t.p2, r, g, b);
+        drawLine(t.p1, t.p3, r, g, b);
     }
 
 }

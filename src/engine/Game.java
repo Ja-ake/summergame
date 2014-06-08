@@ -4,8 +4,8 @@ import files.Loader;
 import graphics.FontContainer;
 import graphics.Graphics;
 import graphics.SpriteContainer;
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -77,7 +77,7 @@ public class Game {
         SpriteContainer.create();
         FontContainer.create();
 
-        room = Loader.loadRandomTerrain(100, 100);
+        room = Loader.loadRandomTerrain(50, 50);
     }
 
     private void initGL() {
@@ -85,22 +85,23 @@ public class Game {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(0, .3f, .8f, 1); // Set background color to black and opaque
-        //glClearDepth(1);                   // Set background depth to farthest
         glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
+        //glEnable(GL_LIGHTING);
+        //glClearDepth(1);                   // Set background depth to farthest
         //glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
         //glShadeModel(GL_SMOOTH);   // Enable smooth shading
-        glEnable(GL_FOG);
         //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
-        FloatBuffer f = ByteBuffer.allocateDirect(32).asFloatBuffer();
-        float fogColor[] = {1, 1, 1, .5f};
-        f.put(fogColor);
+        glMatrixMode(GL_PROJECTION);
+        glEnable(GL_FOG);
+        FloatBuffer f = BufferUtils.createFloatBuffer(4);
+        f.put(.8f).put(.8f).put(.8f).put(1).flip();
         glFog(GL_FOG_COLOR, f);
-        glFogi(GL_FOG_MODE, GL_LINEAR);
+        glFogi(GL_FOG_MODE, GL_EXP2);
+        glFogf(GL_FOG_DENSITY, .001f);
         glFogf(GL_FOG_START, 10);
-        glFogf(GL_FOG_END, 100);
+        glFogf(GL_FOG_END, 1000);
         glFogi(GL_FOG_COORDINATE_SOURCE_EXT, GL_FRAGMENT_DEPTH_EXT);
-//        EXTFogCoord.GL_FOG_COORDINATE_EXT
-//        glFogi()
+        glHint(GL_FOG_HINT, GL_NICEST);
     }
 
     public static Camera getCamera() {

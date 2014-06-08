@@ -27,21 +27,21 @@ public class Camera {
     }
 
     public void setProjectionFPS() {
-        // Set the aspect ratio of the clipping volume to match the viewport
-        glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
-        glLoadIdentity();             // Reset
-        // Enable perspective projection with fovy, aspect, zNear and zFar
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
         gluPerspective(FOV, ASPECT_RATIO, 0.1f, 1000);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
         gluLookAt((float) pos.x, (float) pos.y, (float) pos.z,
                 (float) getLookAt().x, (float) getLookAt().y, (float) getLookAt().z,
                 (float) UP.x, (float) UP.y, (float) UP.z);
-        glMatrixMode(GL_MODELVIEW);
     }
-    
+
     public void setProjectionOrtho() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(0, 0, 1000, 1000, -100, 100);
         glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
     }
 }

@@ -45,10 +45,10 @@ public class Player extends MovingEntity {
 
     public void move() {
         if (controls.forward) {
-            setSpeedDirection(4, xyFacing, zFacing);
+            setSpeedDirection(2, xyFacing, zFacing);
         }
         if (controls.back) {
-            setSpeedDirection(-4, xyFacing, zFacing);
+            setSpeedDirection(-2, xyFacing, zFacing);
         }
         xyFacing -= controls.mouseX / 400;
         zFacing -= controls.mouseY / 400;

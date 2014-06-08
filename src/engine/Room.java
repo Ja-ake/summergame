@@ -7,8 +7,6 @@ import collisions.Vector;
 import entities.Entity;
 import entities.Solid;
 import java.util.ArrayList;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
 
 public class Room {
 
@@ -59,8 +57,8 @@ public class Room {
     }
 
     public void draw() {
-        for (Entity e : entityArray) {
-            e.draw();
+        for (int i = 0; i < entityArray.size(); i++) {
+            entityArray.get(i).draw();
         }
     }
 

@@ -38,11 +38,9 @@ public class Surface extends Solid {
     @Override
     public ArrayList<Triangle> getTriangles() {
         ArrayList<Triangle> a = new ArrayList();
-        Vector c = pos1.add(pos2).add(pos3).add(pos4).divide(4);
-        a.add(new Triangle(pos1, pos2, c));
-        a.add(new Triangle(pos2, pos3, c));
-        a.add(new Triangle(pos3, pos4, c));
-        a.add(new Triangle(pos4, pos1, c));
+        //Value n creates 2^(n+1) triangles
+        a.addAll(new Triangle(pos1, pos3, pos2).getSubtriangles(3));
+        a.addAll(new Triangle(pos1, pos3, pos4).getSubtriangles(3));
         return a;
     }
 

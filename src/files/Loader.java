@@ -80,13 +80,13 @@ public class Loader {
     }
 
     public static Room loadRandomTerrain(int width, int height) {
-        int detail = 6;
+        int detail = 12;
         Room room = new Room(width * detail, height * detail);
         Noise n = new Noise(100 * Math.random());
         double[][] heightMap = new double[width][height];
         for (int i = 0; i < heightMap.length; i++) {
             for (int j = 0; j < heightMap[0].length; j++) {
-                heightMap[i][j] = 30 * n.multi(i, j, 10, .01);
+                heightMap[i][j] = 100 * n.multi(i, j, 4, .01);
             }
         }
         for (int i = 0; i < heightMap.length - 1; i++) {
@@ -98,7 +98,7 @@ public class Loader {
                 new Surface(v1, v2, v3, v4).addToRoom(room);
             }
         }
-        new Player(new Vector(10, 10, 50)).addToRoom(room);
+        new Player(new Vector(width * detail / 2, height * detail / 2, 100)).addToRoom(room);
         return room;
     }
 

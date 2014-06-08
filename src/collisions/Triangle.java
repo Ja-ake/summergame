@@ -18,6 +18,10 @@ public class Triangle {
         p3 = new Vector(x3, y3, z3);
     }
 
+    public boolean couldCollide(RectPrism r) {
+        return new RectPrism(getPoints()).intersects(r);
+    }
+
     public ArrayList<Vector> getPoints() {
         ArrayList<Vector> r = new ArrayList();
         r.add(p1);
@@ -26,8 +30,17 @@ public class Triangle {
         return r;
     }
 
-    public boolean couldCollide(RectPrism r) {
-        return new RectPrism(getPoints()).intersects(r);
+    public ArrayList<Triangle> getSubtriangles(int n) {
+        if (n == 0) {
+            ArrayList<Triangle> r = new ArrayList();
+            r.add(this);
+            return r;
+        } else {
+            ArrayList<Triangle> r = new ArrayList();
+            r.addAll(new Triangle(p1, p3, p1.add(p2).divide(2)).getSubtriangles(n - 1));
+            r.addAll(new Triangle(p2, p3, p1.add(p2).divide(2)).getSubtriangles(n - 1));
+            return r;
+        }
     }
 
     @Override

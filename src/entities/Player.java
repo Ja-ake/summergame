@@ -2,9 +2,7 @@ package entities;
 
 import collisions.Vector;
 import engine.Game;
-import engine.Keys;
 import graphics.Graphics;
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
 public class Player extends MovingEntity {
@@ -52,11 +50,11 @@ public class Player extends MovingEntity {
         }
         xyFacing -= controls.mouseX / 400;
         zFacing -= controls.mouseY / 400;
-        if (zFacing < .01) {
-            zFacing = .01;
+        if (zFacing < .2) {
+            zFacing = .2;
         }
-        if (zFacing > Math.PI - .01) {
-            zFacing = Math.PI - .01;
+        if (zFacing > Math.PI - .2) {
+            zFacing = Math.PI - .2;
         }
     }
 

@@ -22,7 +22,7 @@ public class SpriteContainer {
         spriteMap = new HashMap();
         texLoader = new TextureLoader();
         add("Wall", "wall");
-        add("Grass", "grass");
+        add("Grass", "plants");
     }
 
     public static Sprite get(String name) {

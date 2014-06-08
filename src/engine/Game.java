@@ -96,9 +96,9 @@ public class Game {
         FloatBuffer f = BufferUtils.createFloatBuffer(4);
         f.put(.8f).put(.8f).put(.8f).put(1).flip();
         glFog(GL_FOG_COLOR, f);
-        glFogi(GL_FOG_MODE, GL_EXP2);
-        glFogf(GL_FOG_DENSITY, .001f);
-        glFogf(GL_FOG_START, 10);
+        glFogi(GL_FOG_MODE, GL_LINEAR);
+        glFogf(GL_FOG_DENSITY, .003f);
+        glFogf(GL_FOG_START, 1);
         glFogf(GL_FOG_END, 1000);
         glFogi(GL_FOG_COORDINATE_SOURCE_EXT, GL_FRAGMENT_DEPTH_EXT);
         glHint(GL_FOG_HINT, GL_NICEST);

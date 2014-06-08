@@ -1,6 +1,5 @@
 package entities;
 
-import engine.Game;
 import engine.Keys;
 import engine.MouseInput;
 import org.lwjgl.input.Keyboard;
@@ -12,6 +11,7 @@ class ControlPacket {
     boolean left;
     boolean right;
     boolean jump;
+    boolean sprint;
 
     boolean leftClick;
     boolean rightClick;
@@ -24,6 +24,7 @@ class ControlPacket {
         forward = Keys.pressed(Keyboard.KEY_W) && !Keys.pressed(Keyboard.KEY_S);
         back = Keys.pressed(Keyboard.KEY_S) && !Keys.pressed(Keyboard.KEY_W);
         jump = Keys.pressed(Keyboard.KEY_SPACE);
+        sprint = Keys.pressed(Keyboard.KEY_LSHIFT);
         mouseX = MouseInput.getMouseDX();
         mouseY = MouseInput.getMouseDY();
         leftClick = MouseInput.clicked(0);

@@ -211,6 +211,7 @@ public class Game {
     private void update() {
         Keys.update();
         MouseInput.update();
+        Mouse.setGrabbed(Display.isVisible());
         if (Keys.clicked(Keyboard.KEY_F11)) {
             setDisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT, !Display.isFullscreen());
         }

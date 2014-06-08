@@ -14,7 +14,7 @@ public class Vector {
         return new Vector(x + v.x, y + v.y, z + v.z);
     }
 
-    Vector cross(Vector v) {
+    public Vector cross(Vector v) {
         return new Vector(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
 
@@ -44,11 +44,11 @@ public class Vector {
         return new Vector(x * d, y * d, z * d);
     }
 
-    Vector multiply(Vector v) {
+    public Vector multiply(Vector v) {
         return new Vector(x * v.x, y * v.y, z * v.z);
     }
 
-    Vector normalize() {
+    public Vector normalize() {
         return setLength(1);
     }
 
@@ -56,6 +56,7 @@ public class Vector {
         double l = length();
         if (l == 0) {
             System.out.println("No vector direction");
+            new Exception().printStackTrace();
             return new Vector(d, 0, 0);
         }
         return new Vector(x * d / l, y * d / l, z * d / l);

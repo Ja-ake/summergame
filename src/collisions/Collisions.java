@@ -272,7 +272,7 @@ public abstract class Collisions {
     static double collisionRecursionDepth;
     static CollisionPacket collisionPackage;
 
-    static Vector collideWithWorld(Room world, Vector pos, Vector vel) {
+    public static Vector collideWithWorld(Room world, Vector pos, Vector vel) {
         // All hard-coded distances in this function is
         // scaled to fit the setting above..
         double veryCloseDistance = 0.05;
@@ -282,8 +282,7 @@ public abstract class Collisions {
         }
         // Ok, we need to worry:
         collisionPackage.velocity = vel;
-        collisionPackage.normalizedVelocity = vel;
-        collisionPackage.normalizedVelocity = collisionPackage.normalizedVelocity.normalize();
+        collisionPackage.normalizedVelocity = vel.normalize();
         collisionPackage.basePoint = pos;
         collisionPackage.foundCollision = false;
         // Check for collision (calls the collision routines)

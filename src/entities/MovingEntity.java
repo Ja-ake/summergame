@@ -35,20 +35,16 @@ public class MovingEntity extends Entity {
         return Math.acos(vel.z / getSpeed().length());
     }
 
-    public boolean placeSolid(Vector newPos) {
+    public boolean placeSolid(Vector v) {
         CollisionPacket c = new CollisionPacket();
-        c.R3Position = newPos;
-        c.R3Velocity = new Vector(0, 0, 0);
         c.eRadius = getBounds().getSize();
+        c.R3Position = pos;
+        c.R3Velocity = new Vector(0, 0, -1);
+        c.velocity = v.subtract(pos).divide(c.eRadius);
+        c.normalizedVelocity = c.velocity.normalize();
         c.basePoint = pos.divide(c.eRadius);
-        c.velocity = new Vector(0, 0, 0);
-        for (Solid s : touching(Solid.class)) {
-            for (Triangle t : s.getTriangles()) {
-                if (t.couldCollide(getBounds())) {
-                    Collisions.checkTriangle(c, t.p1.divide(c.eRadius), t.p2.divide(c.eRadius), t.p3.divide(c.eRadius));
-                }
-            }
-        }
+        c.foundCollision = false;
+        room.checkCollision(c);
         return c.foundCollision;
     }
 

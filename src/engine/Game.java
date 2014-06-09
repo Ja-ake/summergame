@@ -2,9 +2,9 @@ package engine;
 
 import entities.Surface;
 import files.Loader;
-import graphics.FontContainer;
+import files.FontContainer;
 import graphics.Graphics;
-import graphics.SpriteContainer;
+import files.SpriteContainer;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;

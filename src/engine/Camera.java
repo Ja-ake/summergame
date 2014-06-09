@@ -10,13 +10,22 @@ public class Camera {
     public static final float ASPECT_RATIO = 1;
     public static final float FOV = 90;
 
-    public Vector pos;
-    public double xyDirection, zDirection;
+    private Vector pos;
+    private double xyDirection, zDirection;
 
     public Camera() {
         pos = new Vector(0, 0, 0);
         xyDirection = 0;
         zDirection = Math.PI / 1.5;
+    }
+
+    public void follow(Vector pos, double followDist, double xyDirection, double zDirection) {
+        double x = followDist * Math.sin(zDirection) * Math.cos(xyDirection);
+        double y = followDist * Math.sin(zDirection) * Math.sin(xyDirection);
+        double z = followDist * Math.cos(zDirection);
+        this.pos = pos.subtract(new Vector(x, y, z));
+        this.xyDirection = xyDirection;
+        this.zDirection = zDirection;
     }
 
     public Vector getLookAt() {
@@ -26,6 +35,10 @@ public class Camera {
         return new Vector(x, y, z);
     }
     
+    public Vector getPos() {
+        return pos;
+    }
+
     public int getRenderDistance() {
         return 1000000;
     }
@@ -47,5 +60,6 @@ public class Camera {
         glOrtho(0, 0, 1000, 1000, -100, 100);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+        glOrtho(0, 0, 1000, 1000, -100, 100);
     }
 }

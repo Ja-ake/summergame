@@ -1,4 +1,4 @@
-package files;
+package graphics;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

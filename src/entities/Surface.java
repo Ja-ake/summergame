@@ -36,7 +36,7 @@ public class Surface extends Solid {
 
     @Override
     public void draw() {
-        double d = distanceTo(Game.getCamera().pos);
+        double d = distanceTo(Game.getCamera().getPos());
         if (DRAW_MESH) {
             if (d < 50) {
                 for (Triangle t : getTriangles()) {

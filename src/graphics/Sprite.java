@@ -1,4 +1,4 @@
-package engine;
+package graphics;
 
 import graphics.Texture;
 import files.TextureLoader;

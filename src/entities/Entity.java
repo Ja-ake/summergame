@@ -5,9 +5,9 @@ import collisions.Vector;
 import engine.Game;
 import engine.Room;
 import graphics.Graphics;
-import graphics.SpriteContainer;
-import engine.Sprite;
-import files.OBJModel;
+import files.SpriteContainer;
+import graphics.Sprite;
+import graphics.OBJModel;
 import java.util.ArrayList;
 
 public class Entity {
@@ -49,9 +49,9 @@ public class Entity {
     }
 
     public void draw() {
-        if (distanceTo(Game.getCamera().pos) < 1000) {
+        if (distanceTo(Game.getCamera().getPos()) < 1000) {
             if (model != null) {
-                model.opengldraw();
+                Graphics.drawModel(model, sprite, pos, (int) Math.round(imageIndex));
             } else if (sprite != null) {
                 Graphics.drawSprite(sprite, pos, (int) Math.round(imageIndex));
             }

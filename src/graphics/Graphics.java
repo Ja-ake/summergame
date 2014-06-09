@@ -1,9 +1,10 @@
 package graphics;
 
+import files.FontContainer;
 import collisions.Triangle;
 import collisions.Vector;
 import engine.Game;
-import engine.Sprite;
+import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.TextureImpl;
@@ -25,6 +26,21 @@ public abstract class Graphics {
             glVertex3d(v2.x, v2.y, v2.z);
         }
         glEnd();
+        glPopMatrix();
+    }
+
+    public static void drawModel(OBJModel m, Sprite s, Vector pos, int index) {
+        glPushMatrix();
+        if (s != null) {
+            s.getTexture(index).bind();
+        } else {
+            TextureImpl.bindNone();
+        }
+        glTranslated(pos.x, pos.y, pos.z);
+        GL11.glScaled(.01,.01,.01);
+        glColor3d(1, 1, 1);
+
+        m.opengldraw();
         glPopMatrix();
     }
 

@@ -1,5 +1,6 @@
-package graphics;
+package files;
 
+import graphics.GLFont;
 import java.awt.Font;
 import java.util.HashMap;
 

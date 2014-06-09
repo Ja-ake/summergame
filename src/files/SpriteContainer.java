@@ -1,7 +1,7 @@
-package graphics;
+package files;
 
-import engine.Sprite;
 import files.TextureLoader;
+import graphics.Sprite;
 import java.util.HashMap;
 
 public class SpriteContainer {

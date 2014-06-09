@@ -4,7 +4,7 @@ import engine.Room;
 
 public abstract class Collisions {
 
-    static boolean getLowestRoot(double a, double b, double c, double maxR, IgnoreMePls root) {
+    static boolean getLowestRoot(double a, double b, double c, double maxR, DoubleWrapper root) {
         // Check if a solution exists
         double determinant = b * b - 4 * a * c;
         // If determinant is negative it means no solutions.
@@ -137,7 +137,7 @@ public abstract class Collisions {
             Vector base = colPackage.basePoint;
             double velocitySquaredLength = velocity.squaredLength();
             double a, b, c; // Params for equation
-            IgnoreMePls newT = new IgnoreMePls(0);
+            DoubleWrapper newT = new DoubleWrapper(0);
             // For each vertex or edge a quadratic equation have to
             // be solved. We parameterize this equation as
             // a*t^2 + b*t + c = 0 and below we calculate the
@@ -276,7 +276,7 @@ public abstract class Collisions {
     public static Vector collideWithWorld(Room world, Vector pos, Vector vel) {
         // All hard-coded distances in this function is
         // scaled to fit the setting above..
-        double veryCloseDistance = 0.05;
+        double veryCloseDistance = 0.01;
         // do we need to worry?
         if (collisionRecursionDepth > 5) {
             return pos;

@@ -1,10 +1,10 @@
 package collisions;
 
-public class IgnoreMePls {
+public class DoubleWrapper {
 
     double val;
 
-    public IgnoreMePls(double val) {
+    public DoubleWrapper(double val) {
         this.val = val;
     }
 }

@@ -7,6 +7,7 @@ import engine.Room;
 import graphics.Graphics;
 import graphics.SpriteContainer;
 import engine.Sprite;
+import files.OBJModel;
 import java.util.ArrayList;
 
 public class Entity {
@@ -14,6 +15,7 @@ public class Entity {
     protected Vector pos;
     protected RectPrism bounds;
     protected Sprite sprite;
+    protected OBJModel model;
     protected double imageIndex;
     protected double imageSpeed;
 
@@ -25,6 +27,7 @@ public class Entity {
 
         bounds = new RectPrism(pos, new Vector(0, 0, 0));
         sprite = null;
+        model = null;
     }
 
     public void addToRoom(Room r) {
@@ -47,7 +50,9 @@ public class Entity {
 
     public void draw() {
         if (distanceTo(Game.getCamera().pos) < 1000) {
-            if (sprite != null) {
+            if (model != null) {
+                model.opengldraw();
+            } else if (sprite != null) {
                 Graphics.drawSprite(sprite, pos, (int) Math.round(imageIndex));
             }
         }
@@ -103,6 +108,10 @@ public class Entity {
 
     public void setBounds(Vector size) {
         bounds.setSize(size);
+    }
+
+    public void setModel(String name) {
+        model = new OBJModel(name, true);
     }
 
     public void setSprite(String name) {

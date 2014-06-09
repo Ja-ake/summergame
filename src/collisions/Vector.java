@@ -32,7 +32,7 @@ public class Vector {
         return new Vector(x / v.x, y / v.y, z / v.z);
     }
 
-    double dot(Vector v) {
+    public double dot(Vector v) {
         return x * v.x + y * v.y + z * v.z;
     }
 
@@ -62,7 +62,7 @@ public class Vector {
         return new Vector(x * d / l, y * d / l, z * d / l);
     }
 
-    double squaredLength() {
+    public double squaredLength() {
         return x * x + y * y + z * z;
     }
 

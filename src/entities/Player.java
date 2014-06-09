@@ -7,12 +7,12 @@ import graphics.Graphics;
 import org.newdawn.slick.Color;
 
 public class Player extends MovingEntity {
-
+    
     private double xyFacing;
     private double zFacing;
     private boolean onWall;
     private final ControlPacket controls;
-
+    
     public Player(Vector pos) {
         super(pos);
         zFacing = Math.PI / 2;
@@ -21,18 +21,20 @@ public class Player extends MovingEntity {
         flatFriction = .05;
         percentFriction = .2;
     }
-
+    
     @Override
     public void collideWithSolid(CollisionPacket c) {
-        double speed = vel.length();
-        vel = vel.cross(c.intersectionNormal).cross(c.intersectionNormal).setLength(speed).multiply(-.9);
+        Vector nor = c.intersectionNormal;
+        double t = Math.acos(vel.dot(nor) / vel.length() / nor.length());
+        double newSpeed = Math.sin(t) * vel.length();
+        vel = nor.cross(vel).cross(nor).setLength(newSpeed);
     }
-
+    
     @Override
     public void draw() {
         Graphics.drawText("Hello", "Default", 200, 100, Color.green);
     }
-
+    
     public void move() {
         double moveSpeed;
         if (controls.sprint) {
@@ -66,13 +68,15 @@ public class Player extends MovingEntity {
             zFacing = Math.PI - .2;
         }
     }
-
+    
     @Override
     public void update() {
         controls.update();
         onWall = placeSolid(new Vector(pos.x, pos.y, pos.z - 1));
         move();
-        if (onWall) friction();
+        if (onWall) {
+            friction();
+        }
         if (vel.length() > 20) {
             vel = vel.setLength(20);
         }
@@ -81,5 +85,5 @@ public class Player extends MovingEntity {
         Game.getCamera().xyDirection = xyFacing;
         Game.getCamera().zDirection = zFacing;
     }
-
+    
 }

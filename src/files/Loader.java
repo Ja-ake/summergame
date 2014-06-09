@@ -2,6 +2,7 @@ package files;
 
 import collisions.Vector;
 import engine.Room;
+import entities.Duck;
 import entities.Player;
 import entities.Surface;
 import entities.Wall;
@@ -14,10 +15,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public class Loader {
-    
+
     public static final String ROOMS_PATH = "rooms\\";
     public static final int BLOCK_SIZE = 32;
-    
+
     public static Room loadText(String name) {
         try {
             String path = ROOMS_PATH + name + ".txt";
@@ -39,7 +40,7 @@ public class Loader {
             return null;
         }
     }
-    
+
     public static Room loadImage(String name) {
         try {
             String path = ROOMS_PATH + name + ".png";
@@ -78,7 +79,7 @@ public class Loader {
                 break;
         }
     }
-    
+
     public static Room loadRandomTerrain(int width, int height) {
         int detail = 4;
         int surfaceSize = 64;
@@ -87,7 +88,7 @@ public class Loader {
         double[][] heightMap = new double[width][height];
         for (int i = 0; i < heightMap.length; i++) {
             for (int j = 0; j < heightMap[0].length; j++) {
-                heightMap[i][j] = 300 * n.multi(i, j, 6, .003);
+                heightMap[i][j] = 300 * n.multi(i, j, 6, .001);
             }
         }
         for (int i = 0; i < heightMap.length - surfaceSize; i += surfaceSize) {
@@ -101,10 +102,11 @@ public class Loader {
                 new Surface(a).addToRoom(room);
             }
         }
+        new Duck(new Vector(0, 0, 0)).addToRoom(room);
         new Player(vectorAt(heightMap, width / 2, height / 2, detail).add(new Vector(0, 0, 20))).addToRoom(room);
         return room;
     }
-    
+
     private static Vector vectorAt(double[][] heightMap, int i, int j, int detail) {
         return new Vector(i * detail, j * detail, heightMap[i][j]);
     }

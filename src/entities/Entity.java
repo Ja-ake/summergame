@@ -51,7 +51,7 @@ public class Entity {
     public void draw() {
         if (distanceTo(Game.getCamera().getPos()) < 1000) {
             if (model != null) {
-                Graphics.drawModel(model, sprite, pos, (int) Math.round(imageIndex));
+                Graphics.drawModel(model, pos, sprite, (int) Math.round(imageIndex));
             } else if (sprite != null) {
                 Graphics.drawSprite(sprite, pos, (int) Math.round(imageIndex));
             }
@@ -111,7 +111,7 @@ public class Entity {
     }
 
     public void setModel(String name) {
-        model = new OBJModel(name, true);
+        model = new OBJModel(name, getBounds().getSize());
     }
 
     public void setSprite(String name) {

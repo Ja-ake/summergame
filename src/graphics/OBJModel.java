@@ -1,5 +1,6 @@
 package graphics;
 
+import collisions.Vector;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,9 +24,9 @@ public class OBJModel {
 
     private static final String MODEL_PATH = "models\\";
 
-    private final ArrayList<float[]> vertexsets = new ArrayList(); // Vertex Coordinates
-    private final ArrayList<float[]> vertexsetsnorms = new ArrayList(); // Vertex Coordinates Normals
-    private final ArrayList<float[]> vertexsetstexs = new ArrayList(); // Vertex Coordinates Textures
+    private final ArrayList<double[]> vertexsets = new ArrayList(); // Vertex Coordinates
+    private final ArrayList<double[]> vertexsetsnorms = new ArrayList(); // Vertex Coordinates Normals
+    private final ArrayList<double[]> vertexsetstexs = new ArrayList(); // Vertex Coordinates Textures
     private final ArrayList<int[]> faces = new ArrayList(); // Array of Faces (vertex sets)
     private final ArrayList<int[]> facestexs = new ArrayList(); // Array of of Faces textures
     private final ArrayList<int[]> facesnorms = new ArrayList(); // Array of Faces normals
@@ -34,19 +35,17 @@ public class OBJModel {
     private int numpolys = 0;
 
     //// Statisitcs for drawing ////
-    public float toppoint = 0;		// y+
-    public float bottompoint = 0;	// y-
-    public float leftpoint = 0;		// x-
-    public float rightpoint = 0;	// x+
-    public float farpoint = 0;		// z-
-    public float nearpoint = 0;		// z+
+    public double toppoint = 0;		// y+
+    public double bottompoint = 0;	// y-
+    public double leftpoint = 0;		// x-
+    public double rightpoint = 0;	// x+
+    public double farpoint = 0;		// z-
+    public double nearpoint = 0;		// z+
 
-    public OBJModel(String name, boolean centerit) {
+    public OBJModel(String name, Vector size) {
         try {
             loadobject(new BufferedReader(new FileReader(MODEL_PATH + name + ".obj")));
-            if (centerit) {
-                centerit();
-            }
+            setSize(size);
             opengldrawtolist();
             numpolys = faces.size();
             cleanup();
@@ -76,10 +75,10 @@ public class OBJModel {
                 newline = newline.trim();
                 if (newline.length() > 0) {
                     if (newline.charAt(0) == 'v' && newline.charAt(1) == ' ') {
-                        float[] coords = new float[4];
+                        double[] coords = new double[4];
                         String[] coordstext = newline.split("\\s+");
                         for (int i = 1; i < coordstext.length; i++) {
-                            coords[i - 1] = Float.valueOf(coordstext[i]);
+                            coords[i - 1] = Double.valueOf(coordstext[i]);
                         }
                         //// check for farpoints ////
                         if (firstpass) {
@@ -113,18 +112,18 @@ public class OBJModel {
                         vertexsets.add(coords);
                     }
                     if (newline.charAt(0) == 'v' && newline.charAt(1) == 't') {
-                        float[] coords = new float[4];
+                        double[] coords = new double[4];
                         String[] coordstext = newline.split("\\s+");
                         for (int i = 1; i < coordstext.length; i++) {
-                            coords[i - 1] = Float.valueOf(coordstext[i]);
+                            coords[i - 1] = Double.valueOf(coordstext[i]);
                         }
                         vertexsetstexs.add(coords);
                     }
                     if (newline.charAt(0) == 'v' && newline.charAt(1) == 'n') {
-                        float[] coords = new float[4];
+                        double[] coords = new double[4];
                         String[] coordstext = newline.split("\\s+");
                         for (int i = 1; i < coordstext.length; i++) {
-                            coords[i - 1] = Float.valueOf(coordstext[i]);
+                            coords[i - 1] = Double.valueOf(coordstext[i]);
                         }
                         vertexsetsnorms.add(coords);
                     }
@@ -167,12 +166,12 @@ public class OBJModel {
     }
 
     private void centerit() {
-        float xshift = getXWidth() / 2;
-        float yshift = getYHeight() / 2;
-        float zshift = getZDepth() / 2;
+        double xshift = getXWidth() / 2;
+        double yshift = getYHeight() / 2;
+        double zshift = getZDepth() / 2;
 
         for (int i = 0; i < vertexsets.size(); i++) {
-            float[] coords = new float[4];
+            double[] coords = new double[4];
 
             coords[0] = ((vertexsets.get(i)))[0] - leftpoint - xshift;
             coords[1] = ((vertexsets.get(i)))[1] - bottompoint - yshift;
@@ -183,15 +182,15 @@ public class OBJModel {
 
     }
 
-    public float getXWidth() {
+    public double getXWidth() {
         return rightpoint - leftpoint;
     }
 
-    public float getYHeight() {
+    public double getYHeight() {
         return toppoint - bottompoint;
     }
 
-    public float getZDepth() {
+    public double getZDepth() {
         return nearpoint - farpoint;
     }
 
@@ -199,7 +198,7 @@ public class OBJModel {
         return numpolys;
     }
 
-    public void opengldrawtolist() {
+    private void opengldrawtolist() {
 
         objectlist = glGenLists(1);
 
@@ -226,23 +225,23 @@ public class OBJModel {
 
             for (int w = 0; w < tempfaces.length; w++) {
                 if (tempfacesnorms[w] != 0) {
-                    float normtempx = (vertexsetsnorms.get(tempfacesnorms[w] - 1))[0];
-                    float normtempy = (vertexsetsnorms.get(tempfacesnorms[w] - 1))[1];
-                    float normtempz = (vertexsetsnorms.get(tempfacesnorms[w] - 1))[2];
-                    glNormal3f(normtempx, normtempy, normtempz);
+                    double normtempx = (vertexsetsnorms.get(tempfacesnorms[w] - 1))[0];
+                    double normtempy = (vertexsetsnorms.get(tempfacesnorms[w] - 1))[1];
+                    double normtempz = (vertexsetsnorms.get(tempfacesnorms[w] - 1))[2];
+                    glNormal3d(normtempx, normtempy, normtempz);
                 }
 
                 if (tempfacestexs[w] != 0) {
-                    float textempx = (vertexsetstexs.get(tempfacestexs[w] - 1))[0];
-                    float textempy = (vertexsetstexs.get(tempfacestexs[w] - 1))[1];
-                    float textempz = (vertexsetstexs.get(tempfacestexs[w] - 1))[2];
-                    glTexCoord3f(textempx, 1f - textempy, textempz);
+                    double textempx = (vertexsetstexs.get(tempfacestexs[w] - 1))[0];
+                    double textempy = (vertexsetstexs.get(tempfacestexs[w] - 1))[1];
+                    double textempz = (vertexsetstexs.get(tempfacestexs[w] - 1))[2];
+                    glTexCoord3d(textempx, 1f - textempy, textempz);
                 }
 
-                float tempx = (vertexsets.get(tempfaces[w] - 1))[0];
-                float tempy = (vertexsets.get(tempfaces[w] - 1))[1];
-                float tempz = (vertexsets.get(tempfaces[w] - 1))[2];
-                glVertex3f(tempx, tempy, tempz);
+                double tempx = (vertexsets.get(tempfaces[w] - 1))[0];
+                double tempy = (vertexsets.get(tempfaces[w] - 1))[1];
+                double tempz = (vertexsets.get(tempfaces[w] - 1))[2];
+                glVertex3d(tempx, tempy, tempz);
             }
 
             //// Quad End Footer /////
@@ -255,6 +254,25 @@ public class OBJModel {
 
     public void opengldraw() {
         glCallList(objectlist);
+    }
+
+    public void setSize(Vector size) {
+        centerit();
+        for (int i = 0; i < vertexsets.size(); i++) {
+            double[] coords = new double[4];
+
+            coords[0] = vertexsets.get(i)[0] * size.x / rightpoint;
+            coords[1] = vertexsets.get(i)[1] * size.y / toppoint;
+            coords[2] = vertexsets.get(i)[2] * size.z / nearpoint;
+
+            vertexsets.set(i, coords); // = coords;
+        }
+        leftpoint = -size.x;
+        bottompoint = -size.y;
+        farpoint = -size.z;
+        rightpoint = size.x;
+        toppoint = size.y;
+        nearpoint = size.z;
     }
 
 }

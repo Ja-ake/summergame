@@ -22,8 +22,9 @@ public class Player extends MovingEntity {
         controls = new ControlPacket();
         flatFriction = .05;
         percentFriction = .2;
-        setModel("ducky");
-        setSprite("Wall");
+        cameraFollowDist = 30;
+        setModel("sphere");
+        setSprite("Grass");
     }
 
     @Override
@@ -87,8 +88,8 @@ public class Player extends MovingEntity {
         }
         super.update();
         cameraFollowDist -= MouseInput.getMouseDWheel();
-        if (cameraFollowDist < 10) {
-            cameraFollowDist = 10;
+        if (cameraFollowDist < 15) {
+            cameraFollowDist = 15;
         }
         Game.getCamera().follow(pos, cameraFollowDist, xyFacing, zFacing);
     }

@@ -78,7 +78,7 @@ public class Game {
         SpriteContainer.create();
         FontContainer.create();
 
-        room = Loader.loadRandomTerrain(200, 200);
+        room = Loader.loadRandomTerrain(1000, 1000);
     }
 
     private void initGL() {

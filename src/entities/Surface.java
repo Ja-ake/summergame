@@ -48,15 +48,15 @@ public class Surface extends Solid {
             Graphics.drawLine(points[points.length - 1][points[0].length - 1], points[0][points[0].length - 1]);
             Graphics.drawLine(points[0][0], points[0][points[0].length - 1]);
         } else if (d < 200) {
-            drawDetail(4);
+            drawDetail(1);
         } else if (d < 400) {
-            drawDetail(4);
+            drawDetail(8);
         } else if (d < 500) {
             drawDetail(8);
-        } else if (d < 1000) {
-            drawDetail(16);
+        } else if (d < 5000) {
+            drawDetail(64);
         } else if (d < 2000) {
-            drawDetail(32);
+            //drawDetail(32);
         } else if (d < 3000) {
             //drawDetail(64);
         } else {

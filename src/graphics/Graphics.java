@@ -29,7 +29,7 @@ public abstract class Graphics {
         glPopMatrix();
     }
 
-    public static void drawModel(OBJModel m, Sprite s, Vector pos, int index) {
+    public static void drawModel(OBJModel m, Vector pos, Sprite s, int index) {
         glPushMatrix();
         if (s != null) {
             s.getTexture(index).bind();
@@ -37,7 +37,6 @@ public abstract class Graphics {
             TextureImpl.bindNone();
         }
         glTranslated(pos.x, pos.y, pos.z);
-        GL11.glScaled(.01,.01,.01);
         glColor3d(1, 1, 1);
 
         m.opengldraw();
